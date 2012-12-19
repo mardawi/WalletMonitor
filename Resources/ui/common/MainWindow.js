@@ -20,8 +20,8 @@ function MainWindow(_title) {
 	});
 	
 	expensesBTN.addEventListener('click', function(e){
-		var ExpensesEdAd = require('ui/common/ExpensesEdAd');
-		var ExpensesWin = new ExpensesEdAd('Expenses Edit/Add',mainWin.containingTab);
+		var ExpensesEdAd = require('ui/common/transactions/addEditTrans/ExpensesEdAd');
+		var ExpensesWin = new ExpensesEdAd('Expenses Add',mainWin.containingTab);
 		mainWin.containingTab.open(ExpensesWin);
 	});
 

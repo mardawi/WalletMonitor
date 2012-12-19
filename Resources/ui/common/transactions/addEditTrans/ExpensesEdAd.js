@@ -1,9 +1,14 @@
 function ExpensesEdAd(_title,_container) {
+	var db = require('lib/db');
+	var Catgdata = db.getCategories();
+	
 	var expensesWin = Ti.UI.createWindow({
 		title : _title,
 		height : '100%',
 		backgroundColor:'#fff'
 	});
+	expensesWin.dateValue = new Date();
+	
 	
 	var topView = Ti.UI.createView({
 		top:'0%',
@@ -92,7 +97,7 @@ function ExpensesEdAd(_title,_container) {
 	
 	setCatgBTN.addEventListener('click', function(e){
 		var categoryWin = require('ui/common/categoryWin');
-		var CategoryWin = new categoryWin('Categories',expensesWin);
+		var CategoryWin = new categoryWin('Categories',expensesWin,Catgdata);
 		_container.open(CategoryWin);
 	});
 	
@@ -173,6 +178,10 @@ function ExpensesEdAd(_title,_container) {
 		top:'70%',
 		width:'50%'
 		
+	});
+	
+	saveBTN.addEventListener('click', function(e){
+		db.addExpense(amountTF.value,expensesWin.dateValue,expensesWin.selectedCatg.id,descriptionTA.value,0,0,'','','',[]);
 	});
 	
 	bottomView.add(addPhoto);

@@ -6,8 +6,14 @@ db.execute('CREATE TABLE IF NOT EXISTS deposite(id INTEGER PRIMARY KEY, amount R
 db.execute('CREATE TABLE IF NOT EXISTS expense(id INTEGER PRIMARY KEY, amount REAL, date TEXT, category_id INTEGER DEFAULT 1 REFERENCES category(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, description TEXT, latitude REAL, longitude REAL, address TEXT, photo_url TEXT, voice_note_url TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS expenceTag(expense_id INTEGER DEFAULT 1 REFERENCES expense(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, tag_name TEXT);');
 
-db.execute('INSERT OR REPLACE INTO category VALUES (1, "general category");');
-db.execute('INSERT OR REPLACE INTO source VALUES (1, "general source");');
+db.execute('INSERT OR REPLACE INTO category VALUES (1, "category1");');
+db.execute('INSERT OR REPLACE INTO category VALUES (2, "category2");');
+db.execute('INSERT OR REPLACE INTO category VALUES (3, "category3");');
+db.execute('INSERT OR REPLACE INTO category VALUES (4, "category4");');
+db.execute('INSERT OR REPLACE INTO source VALUES (1, "source1");');
+db.execute('INSERT OR REPLACE INTO source VALUES (2, "source2");');
+db.execute('INSERT OR REPLACE INTO source VALUES (3, "source3");');
+db.execute('INSERT OR REPLACE INTO source VALUES (4, "source4");');
 
 db.close();
 
@@ -165,7 +171,7 @@ exports.getCategories = function(){
 	while (result.isValidRow()) {
 		categoriesList.push({
 			id : result.fieldByName('id'),
-			name : result.fieldByName('name')
+			title : result.fieldByName('name')
 		});
 		result.next();
 	}
@@ -182,7 +188,7 @@ exports.getSources = function(){
 	while (result.isValidRow()) {
 		sourcesList.push({
 			id : result.fieldByName('id'),
-			name : result.fieldByName('name')
+			title : result.fieldByName('name')
 		});
 		result.next();
 	}

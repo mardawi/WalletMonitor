@@ -1,4 +1,7 @@
 function AddEditDeposit(_title, _container) {
+	
+	var db = require('lib/db');
+	var data = db.getSources();
 
 	var depositWin = Ti.UI.createWindow({
 		title : _title,
@@ -6,6 +9,7 @@ function AddEditDeposit(_title, _container) {
 		backgroundColor : '#ccc'
 	
 	});
+	depositWin.dateValue = new Date();
 
 	var amountView = Ti.UI.createView({
 		layout : 'horizontal',
@@ -126,7 +130,13 @@ function AddEditDeposit(_title, _container) {
 	sourceView.add(testBtn);
 	
 	testBtn.addEventListener('click', function(event){
-		
+		var srcWin = require('ui/common/categoryWin');
+		var CategoryWin = new srcWin('Source',depositWin,data);
+		_container.open(CategoryWin);
+	});
+	
+	Ti.App.addEventListener('selectCategory', function(e){
+		testBtn.title = depositWin.selectedCatg.title;
 	});
 	//--------------------
 
@@ -135,6 +145,10 @@ function AddEditDeposit(_title, _container) {
 		top : '65%',
 		width : '50%',
 		// font:{fontSize:30},
+	});
+	
+	saveBtn.addEventListener('click', function(e){
+		db.addDeposite(amountTxt.value,depositWin.dateValue,depositWin.selectedCatg.id);
 	});
 	depositWin.add(saveBtn);
 

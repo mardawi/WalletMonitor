@@ -1,11 +1,10 @@
 function DatePickerWindow(_title, _container) {
-
+	
 	var win = Ti.UI.createWindow({
 
 	});
 
 	var value = new Date();
-	
 	var minDate = new Date();
 	minDate.setFullYear(value.getFullYear()-1);
 	minDate.setMonth(1);
