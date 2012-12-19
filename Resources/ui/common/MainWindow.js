@@ -54,29 +54,72 @@ function MainWindow(_title) {
 		left : '5%',
 		top : '5%'
 	});
+	
+	var row1 = Ti.UI.createTableViewRow({
+	    height:'auto',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
+	});
 
 	var balnaceLBL = Ti.UI.createLabel({
-		text : 'Balance: 00.00JD',
+		text : 'Balance: ',
 		left : '10%',
 		top : '5%'
 	});
-
+	var blc = 0
+	var balnaceValue = Ti.UI.createLabel({
+		text:blc + ' JD',
+		left:'70%'
+	});
+	row1.add(balnaceLBL);
+	row1.add(balnaceValue);
+	
+	var row2 = Ti.UI.createTableViewRow({
+	    height:'auto',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
+	});
+	
 	var expensesLBL = Ti.UI.createLabel({
-		text : 'Expenses: 00.00JD',
+		text : 'Expenses: ',
 		left : '10%',
 		top : '5%'
 	});
-
+	
+	var exp = 0
+	var expensesValue = Ti.UI.createLabel({
+		text : exp + ' JD',
+		left : '70%'
+	});
+	row2.add(expensesLBL);
+	row2.add(expensesValue);
+	
+	var row3 = Ti.UI.createTableViewRow({
+	    height:'auto',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
+	});
+	
 	var depositsLBL = Ti.UI.createLabel({
-		text : 'Deposits: 00.00JD',
+		text : 'Deposits: ',
 		left : '10%',
 		top : '5%'
+	});
+	
+	var dep = 0
+	var depositsValue = Ti.UI.createLabel({
+		text : dep + ' JD',
+		left : '70%'
+	});
+	
+	row3.add(depositsLBL);
+	row3.add(depositsValue);
+	
+	var data = [row1, row2, row3];
+	var table = Ti.UI.createTableView({
+	    data:data,
+	    style: Ti.UI.iPhone.TableViewStyle.GROUPED
 	});
 
 	Summaryview.add(summaryLBL);
-	Summaryview.add(balnaceLBL);
-	Summaryview.add(expensesLBL);
-	Summaryview.add(depositsLBL);
+	Summaryview.add(table);
 
 	mainWin.add(BTNview);
 	mainWin.add(Summaryview);
