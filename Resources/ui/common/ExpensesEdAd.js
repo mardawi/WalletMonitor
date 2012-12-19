@@ -92,8 +92,12 @@ function ExpensesEdAd(_title,_container) {
 	
 	setCatgBTN.addEventListener('click', function(e){
 		var categoryWin = require('ui/common/categoryWin');
-		var CategoryWin = new categoryWin('Categories',_container);
+		var CategoryWin = new categoryWin('Categories',expensesWin);
 		_container.open(CategoryWin);
+	});
+	
+	Ti.App.addEventListener('selectCategory', function(e){
+		setCatgBTN.title = expensesWin.selectedCatg.title;
 	});
 	
 	row3.add(categoryLBL);

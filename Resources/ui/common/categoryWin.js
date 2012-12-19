@@ -7,6 +7,12 @@ var categoryWin = function(_title, _container){
 	var catgTable = Ti.UI.createTableView({
 		data:data
 	});
+	
+	catgTable.addEventListener('click', function(e){
+		_container.selectedCatg = e.rowData
+		Ti.App.fireEvent('selectCategory');
+		win.close();
+	});
 
 	win.add(catgTable);
 	return win;
