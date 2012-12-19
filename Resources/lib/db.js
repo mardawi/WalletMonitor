@@ -1,19 +1,29 @@
 //bootstrap database
 var db = Ti.Database.open('WalletTransactions');
+
 db.execute('CREATE TABLE IF NOT EXISTS category(id INTEGER PRIMARY KEY, name TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS source(id INTEGER PRIMARY KEY, name TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS deposite(id INTEGER PRIMARY KEY, amount REAL, date TEXT, source_id INTEGER DEFAULT 1 REFERENCES source(id) ON UPDATE CASCADE ON DELETE SET DEFAULT);');
 db.execute('CREATE TABLE IF NOT EXISTS expense(id INTEGER PRIMARY KEY, amount REAL, date TEXT, category_id INTEGER DEFAULT 1 REFERENCES category(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, description TEXT, latitude REAL, longitude REAL, address TEXT, photo_url TEXT, voice_note_url TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS expenceTag(expense_id INTEGER DEFAULT 1 REFERENCES expense(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, tag_name TEXT);');
 
+
+//these added for testing
 db.execute('INSERT OR REPLACE INTO category VALUES (1, "category1");');
 db.execute('INSERT OR REPLACE INTO category VALUES (2, "category2");');
 db.execute('INSERT OR REPLACE INTO category VALUES (3, "category3");');
 db.execute('INSERT OR REPLACE INTO category VALUES (4, "category4");');
+
 db.execute('INSERT OR REPLACE INTO source VALUES (1, "source1");');
 db.execute('INSERT OR REPLACE INTO source VALUES (2, "source2");');
 db.execute('INSERT OR REPLACE INTO source VALUES (3, "source3");');
 db.execute('INSERT OR REPLACE INTO source VALUES (4, "source4");');
+
+db.execute('INSERT OR REPLACE INTO deposite VALUES (1, 104, "12-2-2013", 2);');
+db.execute('INSERT OR REPLACE INTO deposite VALUES (2, 124, "12-4-2013", 3);');
+db.execute('INSERT OR REPLACE INTO deposite VALUES (3, 14, "12-7-2013", 4);');
+db.execute('INSERT OR REPLACE INTO deposite VALUES (4, 14, "12-13-2013", 1);');
+
 
 db.close();
 
@@ -33,6 +43,7 @@ exports.recentExpenses = function() {
 			address : result.fieldByName('address'),
 			photoUrl : result.fieldByName('photo_url'),
 			voiceNoteUrl : result.fieldByName('voice_note_url'),
+			title: 'Expence',
 		});
 		result.next();
 	}
@@ -42,16 +53,17 @@ exports.recentExpenses = function() {
 	return expensesList;
 };
 
-exports.recentDeposites = function() {
+exports.recentDeposits = function() {
 	var depositesList = [];
 	var db = Ti.Database.open('WalletTransactions');
-	var result = db.execute('SELECT * FROM deposite WHERE date BETWEEN datetime("now", "-1 month") AND datetime("now", "localtime")');
+	var result = db.execute('SELECT * FROM deposite');
 	while (result.isValidRow()) {
 		depositesList.push({
 			id : result.fieldByName('id'),
 			amount : Number(result.fieldByName('amount')),
 			date : result.fieldByName('date'),
-			sourceId : result.fieldByName('source_id')
+			sourceId : result.fieldByName('source_id'),
+			title: 'Deposit',
 		});
 		result.next();
 	}
