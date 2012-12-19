@@ -46,6 +46,11 @@ function AddItem(_title, _container) {
 		left: '50%',
 	})
 	// buttonsBar.add(cancelBtn);
+	
+	okBtn.addEventListener('click', function(){
+		_container.itemValue = itemName.value;
+	})
+	
 	return win;
 
 };
