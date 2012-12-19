@@ -59,6 +59,16 @@ function ExpensesEdAd(_title,_container) {
 		title:'Set'
 	});
 	
+	setDate.addEventListener('click', function(event){
+		var DatePickerWindow = require('ui/common/transactions/addEditTrans/DatePickerWindow');
+		var dateWindow = new DatePickerWindow('select date', expensesWin);
+		_container.open(dateWindow);
+	});
+	
+	Ti.App.addEventListener('DateChanged', function(e){
+		dateValue.hintText = String.formatDate(expensesWin.dateValue);
+	});
+	
 	row2.add(dateLBL);
 	row2.add(dateValue);
 	row2.add(setDate);
