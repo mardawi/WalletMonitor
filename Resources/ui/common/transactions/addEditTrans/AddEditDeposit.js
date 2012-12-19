@@ -126,9 +126,7 @@ function AddEditDeposit(_title, _container) {
 	sourceView.add(testBtn);
 	
 	testBtn.addEventListener('click', function(event){
-		var AddItemWindow = require('ui/common/transactions/addEditTrans/AddItem');
-		var addItem = new AddItemWindow('item', depositWin);
-		_container.open(addItem); 
+		
 	});
 	//--------------------
 
