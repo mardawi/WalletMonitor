@@ -4,65 +4,80 @@ function ExpensesEdAd(_title,_container) {
 		height : '100%',
 		backgroundColor:'#fff'
 	});
-
-	var expAmountView = Ti.UI.createView({
-		top : '0%',
-		left : '0%',
+	
+	var topView = Ti.UI.createView({
+		top:'0%',
+		left:'0%',
 		width:'100%',
-		height : '15%',
-		layout:'horizantal'
+		height:'60%'
+	});
+	
+	var row1 = Ti.UI.createTableViewRow({
+	    height:'10%',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
 	});
 	
 	var amountLBL = Ti.UI.createLabel({
 		text : 'Amount:',
-		left : '5%'
+		left : '5%',
+		width:'30%'
 	});
 	
 	var amountTF = Ti.UI.createTextField({
-		left:'25%',
-		width:'70%',
-		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+		left:'35%',
+		width:'35%',
+		height:'90%',
+		hintText:'Amount'
 	});
-	expAmountView.add(amountLBL);
-	expAmountView.add(amountTF);
 	
-	var expDateView = Ti.UI.createView({
-		top : '15%',
-		left : '0%',
-		width:'100%',
-		height : '15%',
-		layout:'horizantal'
+	row1.add(amountLBL);
+	row1.add(amountTF);
+	
+	var row2 = Ti.UI.createTableViewRow({
+	    height:'10%',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
 	});
 	
 	var dateLBL = Ti.UI.createLabel({
 		text : 'Date:',
+		width:'30%',
 		left : '5%'
 	});
 	
+	var dateValue = Ti.UI.createTextField({
+		hintText:String.formatDate(new Date()),
+		editable:false,
+		left:'35%',
+		width:'35%',
+		height:'90%',
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+	});
+	
 	var setDate = Ti.UI.createButton({
-		left:'25%',
+		width:'20%',
+		left:'75%',
 		title:'Set'
 	});
 	
-	expDateView.add(dateLBL);
-	expDateView.add(setDate);
+	row2.add(dateLBL);
+	row2.add(dateValue);
+	row2.add(setDate);
 	
-	var expCatgView = Ti.UI.createView({
-		top : '30%',
-		left : '0%',
-		width:'100%',
-		height : '15%',
-		layout:'horizantal'
+	var row3 = Ti.UI.createTableViewRow({
+	    height:'10%',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
 	});
 	
 	var categoryLBL = Ti.UI.createLabel({
 		text : 'Category:',
+		width:'30%',
 		left : '5%'
 	});
 	
 	var setCatgBTN = Ti.UI.createButton({
 		title:'Set Category',
-		left:'35%'
+		left:'35%',
+		width:'35%'
 	});
 	
 	setCatgBTN.addEventListener('click', function(e){
@@ -71,34 +86,38 @@ function ExpensesEdAd(_title,_container) {
 		_container.open(CategoryWin);
 	});
 	
-	expCatgView.add(categoryLBL);
-	expCatgView.add(setCatgBTN);
-////////////////////////////////////////////////////////////////////////	
-
+	row3.add(categoryLBL);
+	row3.add(setCatgBTN);
 	
-	var expDescView = Ti.UI.createView({
-		top : '45%',
-		left : '0%',
-		width:'100%',
-		height : '15%',
-		layout:'horizantal'
+	var row4 = Ti.UI.createTableViewRow({
+	    height:'25%',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
 	});
 	
 	var descriptionLBL = Ti.UI.createLabel({
 		text : 'Description:',
+		width:'30%',
 		top : '5%',
 		left : '5%'
 	});
 	
 	var descriptionTA = Ti.UI.createTextArea({
-		left:'35%',
+		left:'37%',
 		width:'60%',
-		height:'80%'
+		height:'70%',
+		borderColor:'black',
+		borderRadius:5
 	});
 	
-	expDescView.add(descriptionLBL);
-	expDescView.add(descriptionTA);
+	row4.add(descriptionLBL);
+	row4.add(descriptionTA);
 	
+	var data = [row1, row2, row3, row4];
+	var table = Ti.UI.createTableView({
+	    data:data,
+	    style: Ti.UI.iPhone.TableViewStyle.GROUPED
+	});
+
 	var bottomView = Ti.UI.createView({
 		top : '60%',
 		width : '100%',
@@ -149,10 +168,7 @@ function ExpensesEdAd(_title,_container) {
 	bottomView.add(saveBTN);
 
 
-	expensesWin.add(expAmountView);
-	expensesWin.add(expDateView);
-	expensesWin.add(expCatgView);
-	expensesWin.add(expDescView);
+	expensesWin.add(table);
 	expensesWin.add(bottomView);
 	return expensesWin;
 
