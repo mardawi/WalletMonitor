@@ -1,27 +1,45 @@
-function ApplicationTabGroup(Window) {
-	//create module instance
-	var self = Ti.UI.createTabGroup();
-	
-	//create app tabs
-	var win1 = new Window(L('home')),
-		win2 = new Window(L('settings'));
-	
+function ApplicationTabGroup() {
+	var self = Ti.UI.createTabGroup({
+		// backgroundColor:'red'
+	});
+	var MainWindow = require('ui/common/MainWindow');
+	var ReportWindow = require('ui/common/ReportWindow');
+	// var ConfigWin = require('ui/common/ConfigWindow');
+	var AboutWin = require('ui/common/AboutWindow');
+// 	
+	var mainWin = new MainWindow('main');
+	var reportWindow = new ReportWindow('Report');
+		// //configWin = new ConfigWin('Config'),
+	var aboutWin = new AboutWin('About');
+// 	
 	var tab1 = Ti.UI.createTab({
-		title: L('home'),
-		icon: '/images/KS_nav_ui.png',
-		window: win1
+		title: ('Main'),
+		window: mainWin
 	});
-	win1.containingTab = tab1;
-	
+	mainWin.containingTab = tab1;
+// 	
 	var tab2 = Ti.UI.createTab({
-		title: L('settings'),
-		icon: '/images/KS_nav_views.png',
-		window: win2
+		title: ('Report'),
+		window: reportWindow
 	});
-	win2.containingTab = tab2;
+	reportWindow.containingTab = tab2;
 	
+// 	
+	var tab3 = Ti.UI.createTab({
+		title: ('Config')
+		//window: configWin
+	});
+	
+	var tab4 = Ti.UI.createTab({
+		title: ('About'),
+		window: aboutWin
+	});
+// 	
 	self.addTab(tab1);
 	self.addTab(tab2);
+	self.addTab(tab3);
+	self.addTab(tab4);
+	
 	
 	return self;
 };
