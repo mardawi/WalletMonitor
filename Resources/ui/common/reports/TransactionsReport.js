@@ -10,10 +10,18 @@ function TransactionReport(_title, _container) {
 	var db = require('lib/db');
 	var data = db.recentDeposits();
 
+	var expenses = db.recentExpenses();
+
+	for (var i = 0; i < expenses.length; i++) {
+		data.push(expenses[i]);
+	}
+	data.sort(function(a, b) {
+		return Date.parse(a.date) > Date.parse(b.date);
+	});
+
 	var transTable = Ti.UI.createTableView({
 		title : 'Recent',
 		height : '100%',
-		// width:'100%'
 	});
 
 	win.add(transTable);
@@ -26,51 +34,49 @@ function TransactionReport(_title, _container) {
 			data : data[i]
 		});
 
-		if (data[i].title == 'Deposit') {
-			if (i % 2 == 0)
-				row.backgroundColor = '#999';
-			else
-				row.backgroundColor = '#777';
+		if (i % 2 == 0)
+			row.backgroundColor = '#999';
+		else
+			row.backgroundColor = '#777';
+		var isDeposit = (data[i].title == 'Deposit');
+		// if (data[i].title == 'Deposit') {
 
-			var leftPart = Ti.UI.createView({
-				layout : 'vertical',
-				left : '0',
-				width : '50%'
-			});
-			leftPart.add(Ti.UI.createLabel({
-				text : 'Deposit',
-				left : '5%',
-				color : '#006f00'
-			}));
-			leftPart.add(Ti.UI.createLabel({
-				text : data[i].amount + ' JD',
-				left : '5%'
-			}));
-			row.add(leftPart);
+		var leftPart = Ti.UI.createView({
+			layout : 'vertical',
+			left : '0',
+			width : '50%'
+		});
+		leftPart.add(Ti.UI.createLabel({
+			text : isDeposit ? 'Deposit' : 'Expense',
+			left : '5%',
+			color : isDeposit ? '#006f00' : '#d71527'
+		}));
+		leftPart.add(Ti.UI.createLabel({
+			text : data[i].amount + ' JD',
+			left : '5%'
+		}));
+		row.add(leftPart);
 
-			var rightPart = Ti.UI.createView({
-				layout : 'vertical',
-				right : '0',
-				width : '50%'
-			});
+		var rightPart = Ti.UI.createView({
+			layout : 'vertical',
+			right : '0',
+			width : '50%'
+		});
 
-			var category = db.getSource(data[i].sourceId);
+		var obj = isDeposit ? db.getSource(data[i].sourceId) : db.getCategory(data[i].categoryId);
 
-			rightPart.add(Ti.UI.createLabel({
-				text : category.title,
-				right : '5%',
-				color : 'black'
-			}));
+		rightPart.add(Ti.UI.createLabel({
+			text : obj.title,
+			right : '5%',
+			color : 'black'
+		}));
 
-			rightPart.add(Ti.UI.createLabel({
-				text : data[i].date,
-				right : '5%'
-			}))
+		rightPart.add(Ti.UI.createLabel({
+			text : data[i].date,
+			right : '5%'
+		}))
 
-			row.add(rightPart);
-		} else {
-
-		}
+		row.add(rightPart);
 		tableCustomRows.push(row);
 	}
 
