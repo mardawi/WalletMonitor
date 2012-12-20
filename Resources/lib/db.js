@@ -24,6 +24,8 @@ db.execute('INSERT OR REPLACE INTO deposite VALUES (2, 124, "12-4-2013", 3);');
 db.execute('INSERT OR REPLACE INTO deposite VALUES (3, 14, "12-7-2013", 4);');
 db.execute('INSERT OR REPLACE INTO deposite VALUES (4, 14, "12-13-2013", 1);');
 
+// db.execute('')
+
 
 db.close();
 
@@ -191,6 +193,40 @@ exports.getCategories = function(){
 	db.close();
 
 	return categoriesList;
+};
+
+exports.getCategory = function(_id){
+	var categoriesList = [];
+	var db = Ti.Database.open('WalletTransactions');
+	var result = db.execute('SELECT * FROM category WHERE id = ?', _id);
+	while (result.isValidRow()) {
+		categoriesList.push({
+			id : result.fieldByName('id'),
+			title : result.fieldByName('name')
+		});
+		result.next();
+	}
+	result.close();
+	db.close();
+
+	return categoriesList[0];
+};
+
+exports.getSource = function(_id){
+	var sourcesList = [];
+	var db = Ti.Database.open('WalletTransactions');
+	var result = db.execute('SELECT * FROM source WHERE id = ?', _id);
+	while (result.isValidRow()) {
+		sourcesList.push({
+			id : result.fieldByName('id'),
+			title : result.fieldByName('name')
+		});
+		result.next();
+	}
+	result.close();
+	db.close();
+
+	return sourcesList[0];
 };
 
 exports.getSources = function(){
