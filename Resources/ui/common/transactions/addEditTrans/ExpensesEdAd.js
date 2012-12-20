@@ -97,7 +97,7 @@ function ExpensesEdAd(_title,_container) {
 	
 	setCatgBTN.addEventListener('click', function(e){
 		var categoryWin = require('ui/common/categoryWin');
-		var CategoryWin = new categoryWin('Categories',expensesWin,Catgdata);
+		var CategoryWin = new categoryWin('Categories',expensesWin,_container);
 		_container.open(CategoryWin);
 	});
 	
@@ -131,33 +131,50 @@ function ExpensesEdAd(_title,_container) {
 	row4.add(descriptionLBL);
 	row4.add(descriptionTA);
 	
-	var data = [row1, row2, row3, row4];
+	var row5 = Ti.UI.createTableViewRow({
+		height:'10%',
+	    selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE
+	});
+	
+	var tagsBTN = Ti.UI.createButton({
+		title:'Tags',
+		left:'25%',
+		width:'50%'
+	});
+	
+	tagsBTN.addEventListener('click', function(e){
+		
+	});
+	
+	row5.add(tagsBTN);
+	
+	var data = [row1, row2, row3, row4, row5];
 	var table = Ti.UI.createTableView({
 	    data:data,
 	    style: Ti.UI.iPhone.TableViewStyle.GROUPED
 	});
 
 	var bottomView = Ti.UI.createView({
-		top : '60%',
+		top : '70%',
 		width : '100%',
-		height : '40%',
+		height : '30%',
 		layout : 'horizantal'
 	});
 	
 	var addPhoto = Ti.UI.createButton({
 		title:'Add Photo',
-		top:'5%',
+		top:'7%',
 		left:'5%',
 		width:'40%',
-		height:'35%'
+		height:'30%'
 	});
 	
 	var recVoice = Ti.UI.createButton({
 		title:'Rec Voice',
-		top:'5%',
+		top:'7%',
 		left:'55%',
 		width:'40%',
-		height:'35%'
+		height:'30%'
 	});
 	
 	var locLBL = Ti.UI.createLabel({
