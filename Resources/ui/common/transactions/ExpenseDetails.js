@@ -3,44 +3,41 @@ function ExpenseDetails(_title, _container, _expenseObj) {
 	var win = Ti.UI.createWindow({
 		title : _title,
 		height : '100%',
-		backgroundColor:'#ccc'
-	});
-	
-	var formView = Ti.UI.createView({
-		width: '90%',
-		height: '65%',
-		top:'3%',
-		backgroundColor:'#333',
+		backgroundColor:'#ccc',
 		layout:'vertical',
+		contentHeight:'auto',
 	});
-	win.add(formView);
 	
 	var amountView = Ti.UI.createView({
 		layout:'horizantal',
-		top:'0',
-		left:0,
-		height:'15%',
+		top:'2%',
+		left: 0,
+		height: '10%',
 		width: '100%'
 	});
-	formView.add(amountView);
+	win.add(amountView);
 	
 	amountView.add(Ti.UI.createLabel({
 		text : 'Amount:',
 		left : '5%',
-		width:'30%'
+		top: 0,
+		width:'30%',
+		color:'black'
 	}));
 	
 	amountView.add(Ti.UI.createLabel({
 		left:'35%',
+		top: 0,
 		width:'35%',
-		text:_expenseObj.amount
+		text:_expenseObj.amount,
+		color: 'black'
 	}));
 	
 	var dateView = Ti.UI.createView({
 		layout: 'horizantal',
-		top:'17%',
-		left:0,
-		height: '15%',
+		top: 0,
+		left: 0,
+		height: '10%',
 		width: '100%'
 	});
 	win.add(dateView);
@@ -48,42 +45,76 @@ function ExpenseDetails(_title, _container, _expenseObj) {
 	dateView.add(Ti.UI.createLabel({
 		text: 'Date',
 		left : '5%',
-		width:'30%'
+		top: 0,
+		width:'30%',
+		color: 'black'
 	}));
 	
 	dateView.add(Ti.UI.createLabel({
 		left:'35%',
+		top: 0,
 		width:'35%',
-		text:_expenseObj.date
+		text:_expenseObj.date,
+		color:'black'
 	}));
 	
-	dateView.add(dateValue);
+	var descriptionView = Ti.UI.createView({
+		layout: 'horizantal',
+		top: 0,
+		left: 0,
+		height: '20%',
+		width: '100%'
+	});
+	win.add(descriptionView);
 	
-	var bottomView = Ti.UI.createView({
-		top : '70%',
+	descriptionView.add(Ti.UI.createLabel({
+		text: 'Description',
+		left : '5%',
+		top: 0,
+		width:'30%',
+		color: 'black'
+	}));
+	
+	descriptionView.add(Ti.UI.createTextArea({
+		value: _expenseObj.description,
+		left:'35%',
+		top: 0,
+		width:'60%',
+		height:'100%',
+		color: 'black',
+		editable: false
+	}));
+	
+	var addressView = Ti.UI.createView({
+		top : 0,
 		width : '100%',
-		height : '30%',
+		height : '10%',
 		layout : 'horizantal'
 	});
+	win.add(addressView);
 	
-	var locLBL = Ti.UI.createLabel({
+	addressView.add(Ti.UI.createLabel({
 		text:'Location',
-		top:'50%',
 		left:'5%',
+		top: 0,
 		width:'40%',
 		color:'black'
-	});
+	}));
 	
-	var locAddress = Ti.UI.createLabel({
-		top:'50%',
+	addressView.add(Ti.UI.createLabel({
 		text: _expenseObj.address,
 		left:'45%',
-	});
+		top: 0,
+	}));
 	
-	bottomView.add(locLBL);
-	bottomView.add(locAddress);
-	win.add(bottomView);
-
+	var mediaView = Ti.UI.createView({
+		top : 0,
+		width : '100%',
+		height : '20%',
+		layout : 'horizantal'
+	});
+	win.add(mediaView);
+	
 	return win;
 
 };
