@@ -53,8 +53,8 @@ function ReportWindow(_title) {
 		height: '25%'
 	});
 	byTimeBtn.addEventListener('click',function(event){
-		var TimeSpamReportWindow = require('ui/common/reports/TimeSpamReport');
-		reportWin.containingTab.open(new TimeSpamReportWindow('Time Spam Report', reportWin.containingTab));
+		var TimeSpanReportWindow = require('ui/common/reports/TimeSpanReport');
+		reportWin.containingTab.open(new TimeSpanReportWindow('Time Span Report', reportWin.containingTab));
 	});
 	reportWin.add(byTimeBtn);
 	

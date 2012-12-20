@@ -38,9 +38,8 @@ function TransactionReport(_title, _container) {
 			row.backgroundColor = '#999';
 		else
 			row.backgroundColor = '#777';
+			
 		var isDeposit = (data[i].title == 'Deposit');
-		// if (data[i].title == 'Deposit') {
-
 		var leftPart = Ti.UI.createView({
 			layout : 'vertical',
 			left : '0',
