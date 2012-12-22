@@ -4,12 +4,12 @@ function ApplicationTabGroup() {
 	});
 	var MainWindow = require('ui/common/MainWindow');
 	var ReportWindow = require('ui/common/ReportWindow');
-	// var ConfigWin = require('ui/common/ConfigWindow');
+	var ConfigWin = require('ui/common/ConfigWindow');
 	var AboutWin = require('ui/common/AboutWindow');
 // 	
 	var mainWin = new MainWindow('main');
 	var reportWindow = new ReportWindow('Report');
-		// //configWin = new ConfigWin('Config'),
+	var configWin = new ConfigWin('Config');
 	var aboutWin = new AboutWin('About');
 // 	
 	var tab1 = Ti.UI.createTab({
@@ -26,9 +26,10 @@ function ApplicationTabGroup() {
 	
 // 	
 	var tab3 = Ti.UI.createTab({
-		title: ('Config')
-		//window: configWin
+		title: ('Config'),
+		window: configWin
 	});
+	configWin.containingTab = tab3;
 	
 	var tab4 = Ti.UI.createTab({
 		title: ('About'),

@@ -168,6 +168,7 @@ exports.editCategory = function(id, categoryName) {
 
 exports.editSource = function(id, sourceName) {
 	var db = Ti.Database.open('WalletTransactions');
+	
 	db.execute('UPDATE source SET name = ? WHERE id = ?', sourceName, id);
 	db.close();
 
@@ -181,6 +182,17 @@ exports.editDeposite = function(id, amount, date, sourceId) {
 
 	Ti.App.fireEvent('databaseUpdated');
 };
+
+exports.deletAll = function() {
+	var db = Ti.Database.open('WalletTransactions');
+	db.execute('DELETE FROM source');
+	db.execute('DELETE FROM deposite');
+	db.execute('DELETE FROM category');
+	db.execute('DELETE FROM expense');
+	db.close();
+	
+	Ti.App.fireEvent('databaseUpdated');
+}
 
 exports.getCategories = function(){
 	var categoriesList = [];
