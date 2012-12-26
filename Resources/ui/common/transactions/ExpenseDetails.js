@@ -1,5 +1,5 @@
 function ExpenseDetails(_title, _container, _expenseObj) {
-
+	_expenseObj.voiceNoteUrl = 'www.example.com/podcast.mp3';
 	var win = Ti.UI.createWindow({
 		title : _title,
 		height : '100%',
@@ -114,6 +114,30 @@ function ExpenseDetails(_title, _container, _expenseObj) {
 		layout : 'horizantal'
 	});
 	win.add(mediaView);
+	
+	var imgView = Ti.UI.createImageView({
+		image:_expenseObj.photoUrl==''?'http://www.maynardiowa.org/No%20Photo%20Available.jpg':_expenseObj.photoUrl,
+		top:0,
+		left:'5%',
+		width:'45%',
+		height:'100%'
+	});
+	mediaView.add(imgView);
+	
+	var audioPlayer = Ti.Media.createAudioPlayer({ 
+    url: _expenseObj.voiceNoteUrl,
+    allowBackground: true
+	});
+	
+	var playStop = Ti.UI.createButton({
+		top:0,
+		width: '45%',
+		left:'50%',
+		height:'100%',
+		title:_expenseObj.voiceNoteUrl==''?'No voice note':'Play'
+	});
+	mediaView.add(playStop);
+	// mediaView.add(player);
 	
 	return win;
 
