@@ -1,7 +1,8 @@
 function DatePickerWindow(_title, _container) {
 	
 	var win = Ti.UI.createWindow({
-
+		title:'Set Date',
+		backgroundColor:'#ccc'
 	});
 
 	var value = new Date();
@@ -13,7 +14,8 @@ function DatePickerWindow(_title, _container) {
 	
 
 	var picker = Ti.UI.createPicker({
-		type : Ti.UI.PICKER_TYPE_DATE,
+		type: Ti.UI.PICKER_TYPE_DATE_AND_TIME,
+		// type : Ti.UI.PICKER_TYPE_DATE,
 		minDate : minDate,
 		maxDate : value,
 		value : value

@@ -3,7 +3,8 @@ function ReportWindow(_title) {
 	var reportWin = Ti.UI.createWindow({
 		title:_title,
 		width:'100%',
-		height:'100%'
+		height:'100%',
+		backgroundColor:'#ccc'
 	});
 	var transBtn = Ti.UI.createButton({
 		title: 'Transactions',
