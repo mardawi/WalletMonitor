@@ -7,7 +7,6 @@ db.execute('CREATE TABLE IF NOT EXISTS deposite(id INTEGER PRIMARY KEY, amount R
 db.execute('CREATE TABLE IF NOT EXISTS expense(id INTEGER PRIMARY KEY, amount REAL, date TEXT, category_id INTEGER DEFAULT 1 REFERENCES category(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, description TEXT, latitude REAL, longitude REAL, address TEXT, photo_url TEXT, voice_note_url TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS expenceTag(expense_id INTEGER DEFAULT 1 REFERENCES expense(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, tag_name TEXT);');
 
-
 //these added for testing
 db.execute('INSERT OR REPLACE INTO category VALUES (1, "category1");');
 db.execute('INSERT OR REPLACE INTO category VALUES (2, "category2");');
@@ -30,13 +29,25 @@ db.execute('INSERT OR REPLACE INTO expense VALUES(3, 70, "12-18-2013", 1, "this 
 db.execute('INSERT OR REPLACE INTO expense VALUES(4, 80, "12-10-2013", 1, "this is a description", 0, 0, "", "", "");');
 db.execute('INSERT OR REPLACE INTO expense VALUES(5, 90, "12-1-2013", 1, "this is a description", 0, 0, "", "", "");');
 
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(1, "Tag1");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(1, "Tag2");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(1, "Tag3");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(2, "Tag1");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(2, "Tag4");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(3, "Tag1");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(3, "Tag4");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(4, "Tag1");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(4, "Tag2");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(5, "Tag1");');
+db.execute('INSERT OR REPLACE INTO expenceTag VALUES(5, "Tag3");');
 
 db.close();
 
 exports.recentExpenses = function() {
 	var expensesList = [];
 	var db = Ti.Database.open('WalletTransactions');
-	var result = db.execute('SELECT * FROM expense');// WHERE date BETWEEN datetime("now", "-1 month") AND datetime("now", "localtime")');
+	var result = db.execute('SELECT * FROM expense');
+	// WHERE date BETWEEN datetime("now", "-1 month") AND datetime("now", "localtime")');
 	while (result.isValidRow()) {
 		expensesList.push({
 			id : result.fieldByName('id'),
@@ -49,7 +60,7 @@ exports.recentExpenses = function() {
 			address : result.fieldByName('address'),
 			photoUrl : result.fieldByName('photo_url'),
 			voiceNoteUrl : result.fieldByName('voice_note_url'),
-			title: 'Expense',
+			title : 'Expense',
 		});
 		result.next();
 	}
@@ -69,7 +80,7 @@ exports.recentDeposits = function() {
 			amount : Number(result.fieldByName('amount')),
 			date : result.fieldByName('date'),
 			sourceId : result.fieldByName('source_id'),
-			title: 'Deposit',
+			title : 'Deposit',
 		});
 		result.next();
 	}
@@ -83,9 +94,9 @@ exports.addExpense = function(amount, date, categoryId, description, latitude, l
 	var db = Ti.Database.open('WalletTransactions');
 	var id = db.execute("INSERT INTO expense(amount, date, category_id, description, latitude, longitude, address, photo_url, voice_note_url) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", amount, date, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl);
 
-	for(var i=0; i< tags.length; i++)
+	for (var i = 0; i < tags.length; i++)
 		db.execute('INSERT OR REPLACE INTO expenceTag VALUES (?, ?);', id, tags[i]);
-	
+
 	db.close();
 
 	Ti.App.fireEvent("databaseUpdated");
@@ -152,7 +163,7 @@ exports.editExpense = function(id, amount, date, categoryId, description, latitu
 	db.execute('UPDATE expense SET amount = ?, date = ?, category = ?, description = ?, latitude = ?, longitude = ?, address = ?, photo_url = ?, voice_note_url = ? WHERE id = ?', amount, date, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl, id);
 	db.close();
 
-	for(var i=0; i< tags.length; i++)
+	for (var i = 0; i < tags.length; i++)
 		db.execute('INSERT OR REPLACE INTO expenceTag VALUES (?, ?);', id, tags[i]);
 
 	Ti.App.fireEvent('databaseUpdated');
@@ -168,7 +179,7 @@ exports.editCategory = function(id, categoryName) {
 
 exports.editSource = function(id, sourceName) {
 	var db = Ti.Database.open('WalletTransactions');
-	
+
 	db.execute('UPDATE source SET name = ? WHERE id = ?', sourceName, id);
 	db.close();
 
@@ -190,11 +201,11 @@ exports.deletAll = function() {
 	db.execute('DELETE FROM category');
 	db.execute('DELETE FROM expense');
 	db.close();
-	
+
 	Ti.App.fireEvent('databaseUpdated');
 }
 
-exports.getCategories = function(){
+exports.getCategories = function() {
 	var categoriesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM category');
@@ -211,7 +222,7 @@ exports.getCategories = function(){
 	return categoriesList;
 };
 
-exports.getCategory = function(_id){
+exports.getCategory = function(_id) {
 	var categoriesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM category WHERE id = ?', _id);
@@ -228,7 +239,7 @@ exports.getCategory = function(_id){
 	return categoriesList[0];
 };
 
-exports.getSource = function(_id){
+exports.getSource = function(_id) {
 	var sourcesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM source WHERE id = ?', _id);
@@ -245,7 +256,7 @@ exports.getSource = function(_id){
 	return sourcesList[0];
 };
 
-exports.getSources = function(){
+exports.getSources = function() {
 	var sourcesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM source');
@@ -262,10 +273,10 @@ exports.getSources = function(){
 	return sourcesList;
 };
 
-exports.getTransByTag = function(_tag){
+exports.getTransByTag = function(_tag) {
 	var transList = [];
 	var db = Ti.Database.open('WalletTransactions');
-	var result = db.execute('SELECT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url, FROM expense, expenceTag WHERE  expenceTag.tag_name = ? AND expense.id = expenceTag.expense_id', _tag);
+	var result = db.execute('SELECT DISTINCT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url FROM expense, expenceTag WHERE  expenceTag.tag_name = ? AND expense.id = expenceTag.expense_id', _tag);
 	while (result.isValidRow()) {
 		transList.push({
 			id : result.fieldByName('id'),
@@ -278,7 +289,7 @@ exports.getTransByTag = function(_tag){
 			address : result.fieldByName('address'),
 			photoUrl : result.fieldByName('photo_url'),
 			voiceNoteUrl : result.fieldByName('voice_note_url'),
-			title: 'Expense',
+			title : 'Expense',
 		});
 		result.next();
 	}
@@ -288,10 +299,10 @@ exports.getTransByTag = function(_tag){
 	return transList;
 };
 
-exports.getTransByCategory = function(_category){
+exports.getTransByCategory = function(_category) {
 	var transList = [];
 	var db = Ti.Database.open('WalletTransactions');
-	var result = db.execute('SELECT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url, FROM expense, category WHERE  category.name = ? AND category.id = expense.category_id', _category);
+	var result = db.execute('SELECT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url FROM expense, category WHERE  category.name = ? AND category.id = expense.category_id', _category);
 	while (result.isValidRow()) {
 		transList.push({
 			id : result.fieldByName('id'),
@@ -304,7 +315,23 @@ exports.getTransByCategory = function(_category){
 			address : result.fieldByName('address'),
 			photoUrl : result.fieldByName('photo_url'),
 			voiceNoteUrl : result.fieldByName('voice_note_url'),
-			title: 'Expense',
+			title : 'Expense',
+		});
+		result.next();
+	}
+	result.close();
+	db.close();
+
+	return transList;
+};
+
+exports.getTags = function() {
+	var transList = [];
+	var db = Ti.Database.open('WalletTransactions');
+	var result = db.execute('SELECT DISTINCT tag_name FROM expenceTag');
+	while (result.isValidRow()) {
+		transList.push({
+			title : result.fieldByName('tag_name'),
 		});
 		result.next();
 	}
