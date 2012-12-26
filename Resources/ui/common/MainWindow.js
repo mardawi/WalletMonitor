@@ -2,7 +2,7 @@ function MainWindow(_title) {
 	var mainWin = Ti.UI.createWindow({
 		title : _title,
 		height : '100%',
-		backgroundColor:'#fff'
+		backgroundColor : '#ccc'
 	});
 
 	var BTNview = Ti.UI.createView({
@@ -115,6 +115,8 @@ function MainWindow(_title) {
 	var data = [row1, row2, row3];
 	var table = Ti.UI.createTableView({
 	    data:data,
+	    scrollable:false,
+	    backgroundColor:'#ccc',
 	    style: Ti.UI.iPhone.TableViewStyle.GROUPED
 	});
 

@@ -2,15 +2,23 @@ var categoryWin = function(_title, _containerWin,containerTab){
 	var db = require('lib/db');
 	
 	var win = Ti.UI.createWindow({
-		title:_title
+		title:_title,
+		backgroundColor:'#ccc'
 	});
 	var data = db.getCategories();
 	var catgTable = Ti.UI.createTableView({
-		data:data
+		data:data,
+		backgroundColor:'#ccc'
 	});
 	
 	var populate = function(){
+			if (catgTable.data.length > 0) {
+    			for (var i = catgTable.data[0].rows.length-1; i >= 0; i--) {
+        			catgTable.deleteRow(i);
+    			}
+			}
    			data = db.getCategories();
+   			catgTable.setData(data);
    			catgTable.appendRow({title:'Add New Row'})
    	};
 
@@ -24,19 +32,13 @@ var categoryWin = function(_title, _containerWin,containerTab){
 		}
 		else{
 			_containerWin.selectedCatg = e.rowData
-		
-		
-		
-		Ti.App.fireEvent('selectCategory');
-		win.close();
+			Ti.App.fireEvent('selectCategory');
+			win.close();
 		}
 	});
 	
-	
-   	
-   	Ti.App.addEventListener('databaseUpdated', function(e){
-   		
-   		populate();
+	Ti.App.addEventListener('databaseUpdated', function(e){
+		populate();
    	});
    		
 	win.add(catgTable);

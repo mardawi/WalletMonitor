@@ -6,93 +6,40 @@ function AddEditDeposit(_title, _container) {
 	var depositWin = Ti.UI.createWindow({
 		title : _title,
 		height : '100%',
+		layout:'vertical',
 		backgroundColor : '#ccc'
 	
 	});
 	depositWin.dateValue = new Date();
 
-	var amountView = Ti.UI.createView({
-		layout : 'horizontal',
-		height : '15%',
-		top : '10%',
-		left : '2%',
-	});
-	depositWin.add(amountView);
-
-	var amountLbl = Ti.UI.createLabel({
-		text : 'Amount',
-		width : '25%',
-		left : 0,
-		top : 0,
-		// font:{fontSize:30},
-		color : 'black'
-	});
-	amountView.add(amountLbl);
-
 	var amountTxt = Ti.UI.createTextField({
-		hintText : 'Enter Amount',
-		width : '65%',
-		// zIndex : 3
+		keyboardType:Ti.UI.KEYBOARD_DECIMAL_PAD,
+		width:'90%',
+		top:'5%',
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'Set Amount'
 	});
-	amountView.add(amountTxt);
-
-	var dateView = Ti.UI.createView({
-		layout : 'horizontal',
-		top : '25%',
-		left : '2%',
-		height : '15%',
-	});
-	depositWin.add(dateView);
-
+	depositWin.add(amountTxt);
 	
-	var dateLbl = Ti.UI.createLabel({
-		text: 'Date',
-		width: '25%',
-		color : 'black'
-	});
-	dateView.add(dateLbl);
-
 	var dateValue = Ti.UI.createTextField({
-		hintText: String.formatDate(new Date()),
-		color : 'black',
-		editable: false,
-		width:'40%'
-		// width:'30%'
+		hintText:String.formatDate(new Date()),
+		enabled: false,
+		width:'90%',
+		top:'10%',
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
-	dateView.add(dateValue);
 	
-	var changeDateBtn = Ti.UI.createButton({
-		title: 'change',
-		width:'20%'
-	});
-	dateView.add(changeDateBtn);
-	
-	changeDateBtn.addEventListener('click', function(event){
+	dateValue.addEventListener('click', function(event){
 		var DatePickerWindow = require('ui/common/transactions/addEditTrans/DatePickerWindow');
 		var dateWindow = new DatePickerWindow('select date', depositWin);
 		_container.open(dateWindow);
 	});
 	
 	Ti.App.addEventListener('DateChanged',function(e){
-		dateValue.hintText = String.formatDate(depositWin.dateValue);
+		dateValue.hintText = depositWin.dateValue;
 	});
+	depositWin.add(dateValue);
 
-	var sourceView = Ti.UI.createView({
-		layout : 'horizontal',
-		top : '40%',
-		left : '2%',
-		height : '15%',
-	});
-	depositWin.add(sourceView);
-
-	var sourceLbl = Ti.UI.createLabel({
-		text : 'Source',
-		width : '25%',
-		left : 0,
-		top : 0,
-		color : 'black'
-	});
-	sourceView.add(sourceLbl);
 
 	
 	// var sourcePicker = Ti.UI.createPicker();
@@ -124,34 +71,49 @@ function AddEditDeposit(_title, _container) {
 	// sourceView.add(sourcePicker);
 	
 	//-------------------
-	var testBtn = Ti.UI.createButton({
-		title: 'Add item'
-	});
-	sourceView.add(testBtn);
+	// var testBtn = Ti.UI.createButton({
+		// title: 'Add item'
+	// });
+	// sourceView.add(testBtn);
 	
-	testBtn.addEventListener('click', function(event){
+	var addSource = Ti.UI.createButton({
+		title:'Add item',
+		// enabled: false,
+		top:'10%',
+		// borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		width:'90%'
+	});
+	
+	addSource.addEventListener('click', function(event){
 		var srcWin = require('ui/common/categoryWin');
 		var CategoryWin = new srcWin('Source',depositWin,data);
 		_container.open(CategoryWin);
 	});
 	
 	Ti.App.addEventListener('selectCategory', function(e){
-		testBtn.title = depositWin.selectedCatg.title;
+		addSource.title = depositWin.selectedCatg.title;
 	});
+	
+	depositWin.add(addSource)
 	//--------------------
 
 	var saveBtn = Ti.UI.createButton({
 		title : 'save',
-		top : '65%',
-		width : '50%',
-		// font:{fontSize:30},
 	});
 	
 	saveBtn.addEventListener('click', function(e){
 		db.addDeposite(amountTxt.value,depositWin.dateValue,depositWin.selectedCatg.id);
+		depositWin.close();
 	});
-	depositWin.add(saveBtn);
-
+	// depositWin.add(saveBtn);
+	
+	depositWin.addEventListener('click', function(e){
+		amountTxt.blur();
+		dateValue.blur();
+	});
+	
+	depositWin.setRightNavButton(saveBtn);
+	
 	return depositWin;
 
 };

@@ -1,4 +1,5 @@
 function AddItem(_title, _container) {
+	var db = require('lib/db');
 
 	var win = Ti.UI.createWindow({
 		width:'100%',
@@ -31,8 +32,19 @@ function AddItem(_title, _container) {
 	win.add(okBtn);
 	
 	okBtn.addEventListener('click', function(){
-		_container.itemValue = itemName.value;
-	})
+		if(_title == 'Category'){
+			db.addCategory(itemName.value);
+			win.close();
+		}else{
+			db.addSource(itemName.value);
+			win.close();
+		}
+		
+		
+		// _container.itemValue = itemName.value;
+	});
+	
+	
 	
 	return win;
 
