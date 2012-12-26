@@ -24,7 +24,11 @@ db.execute('INSERT OR REPLACE INTO deposite VALUES (2, 124, "12-4-2013", 3);');
 db.execute('INSERT OR REPLACE INTO deposite VALUES (3, 14, "12-7-2013", 4);');
 db.execute('INSERT OR REPLACE INTO deposite VALUES (4, 14, "12-13-2013", 1);');
 
-// db.execute('')
+db.execute('INSERT OR REPLACE INTO expense VALUES(1, 50, "12-14-2013", 1, "this is a description", 0, 0, "", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(2, 60, "12-16-2013", 1, "this is a description", 0, 0, "", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(3, 70, "12-18-2013", 1, "this is a description", 0, 0, "", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(4, 80, "12-10-2013", 1, "this is a description", 0, 0, "", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(5, 90, "12-1-2013", 1, "this is a description", 0, 0, "", "", "");');
 
 
 db.close();
@@ -32,7 +36,7 @@ db.close();
 exports.recentExpenses = function() {
 	var expensesList = [];
 	var db = Ti.Database.open('WalletTransactions');
-	var result = db.execute('SELECT * FROM expense WHERE date BETWEEN datetime("now", "-1 month") AND datetime("now", "localtime")');
+	var result = db.execute('SELECT * FROM expense');// WHERE date BETWEEN datetime("now", "-1 month") AND datetime("now", "localtime")');
 	while (result.isValidRow()) {
 		expensesList.push({
 			id : result.fieldByName('id'),
@@ -164,6 +168,7 @@ exports.editCategory = function(id, categoryName) {
 
 exports.editSource = function(id, sourceName) {
 	var db = Ti.Database.open('WalletTransactions');
+	
 	db.execute('UPDATE source SET name = ? WHERE id = ?', sourceName, id);
 	db.close();
 
@@ -177,6 +182,17 @@ exports.editDeposite = function(id, amount, date, sourceId) {
 
 	Ti.App.fireEvent('databaseUpdated');
 };
+
+exports.deletAll = function() {
+	var db = Ti.Database.open('WalletTransactions');
+	db.execute('DELETE FROM source');
+	db.execute('DELETE FROM deposite');
+	db.execute('DELETE FROM category');
+	db.execute('DELETE FROM expense');
+	db.close();
+	
+	Ti.App.fireEvent('databaseUpdated');
+}
 
 exports.getCategories = function(){
 	var categoriesList = [];
