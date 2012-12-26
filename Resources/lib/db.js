@@ -49,7 +49,7 @@ exports.recentExpenses = function() {
 			address : result.fieldByName('address'),
 			photoUrl : result.fieldByName('photo_url'),
 			voiceNoteUrl : result.fieldByName('voice_note_url'),
-			title: 'Expence',
+			title: 'Expense',
 		});
 		result.next();
 	}
@@ -260,4 +260,56 @@ exports.getSources = function(){
 	db.close();
 
 	return sourcesList;
+};
+
+exports.getTransByTag = function(_tag){
+	var transList = [];
+	var db = Ti.Database.open('WalletTransactions');
+	var result = db.execute('SELECT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url, FROM expense, expenceTag WHERE  expenceTag.tag_name = ? AND expense.id = expenceTag.expense_id', _tag);
+	while (result.isValidRow()) {
+		transList.push({
+			id : result.fieldByName('id'),
+			amount : Number(result.fieldByName('amount')),
+			date : result.fieldByName('date'),
+			categoryId : result.fieldByName('category_id'),
+			description : result.fieldByName('description'),
+			latitude : Number(result.fieldByName('latitude')),
+			longitude : Number(result.fieldByName('longitude')),
+			address : result.fieldByName('address'),
+			photoUrl : result.fieldByName('photo_url'),
+			voiceNoteUrl : result.fieldByName('voice_note_url'),
+			title: 'Expense',
+		});
+		result.next();
+	}
+	result.close();
+	db.close();
+
+	return transList;
+};
+
+exports.getTransByCategory = function(_category){
+	var transList = [];
+	var db = Ti.Database.open('WalletTransactions');
+	var result = db.execute('SELECT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url, FROM expense, category WHERE  category.name = ? AND category.id = expense.category_id', _category);
+	while (result.isValidRow()) {
+		transList.push({
+			id : result.fieldByName('id'),
+			amount : Number(result.fieldByName('amount')),
+			date : result.fieldByName('date'),
+			categoryId : result.fieldByName('category_id'),
+			description : result.fieldByName('description'),
+			latitude : Number(result.fieldByName('latitude')),
+			longitude : Number(result.fieldByName('longitude')),
+			address : result.fieldByName('address'),
+			photoUrl : result.fieldByName('photo_url'),
+			voiceNoteUrl : result.fieldByName('voice_note_url'),
+			title: 'Expense',
+		});
+		result.next();
+	}
+	result.close();
+	db.close();
+
+	return transList;
 };
