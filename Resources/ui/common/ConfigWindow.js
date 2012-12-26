@@ -3,38 +3,42 @@ function ConfigWindow(_title){
 	
 	var win = Ti.UI.createWindow({
 		title:_title,
-		height : '100%',
-		backgroundColor:'#fff'
+		layout: 'vertical',
+		backgroundColor:'#ccc'
 	});
 	
-	var timeview = Ti.UI.createView({
-		top : 0,
-		left : 0
-	});
+	// var timeview = Ti.UI.createView({
+		// top : 0,
+		// left : 0
+	// });
 	
 	
 	var changeTimebtn = Ti.UI.createButton({
-		title:"change Time span",
-		top:20,
-		width:200
+		title:"Change time span",
+		top:'5%',
+		width:'80%',
+		height:'15%'
 	});
 	
 	var changeCategoriesBtn = Ti.UI.createButton({
 		title:"Edit categories",
-		top:80,
-		width:200
+		top:'5%',
+		width:'80%',
+		height:'15%'
 	});
 	
 	var setBalanceBtn = Ti.UI.createButton({
-		title:"Set initail Balance",
-		top:140,
-		width:200
+		title:"Set initail balance",
+		top:'5%',
+		width:'80%',
+		height:'15%'
 	});
 	
 	var deletAllBtn = Ti.UI.createButton({
-		title:"Delet All Data",
-		top:200,
-		width:200
+		title:"Delet all data",
+		top:'5%',
+		width:'80%',
+		height:'15%'
 	});
 	
 	deletAllBtn.addEventListener("click",function(){
@@ -79,13 +83,17 @@ function ConfigWindow(_title){
 		win.containingTab.open(Balance);
 	});
 	
-	timeview.add(deletAllBtn);
-	timeview.add(changeTimebtn);
-	timeview.add(setBalanceBtn);
-	timeview.add(changeCategoriesBtn);
+	// timeview.add(deletAllBtn);
+	// timeview.add(changeTimebtn);
+	// timeview.add(setBalanceBtn);
+	// timeview.add(changeCategoriesBtn);
 	
 	
-	win.add(timeview);
+	
+	win.add(changeTimebtn);
+	win.add(setBalanceBtn);
+	win.add(changeCategoriesBtn);
+	win.add(deletAllBtn);
 	return win;
 	
 	

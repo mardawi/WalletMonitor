@@ -11,6 +11,18 @@ function ExpensesEdAd(_title,_container) {
 	
 	expensesWin.dateValue = new Date();
 	
+	
+	var currentSessionMode = Titanium.Media.audioSessionMode;
+	var recording = Ti.Media.createAudioRecorder();
+	
+	recording.compression = Ti.Media.AUDIO_FORMAT_ULAW;
+	recording.format = Ti.Media.AUDIO_FILEFORMAT_WAVE;
+	
+	var rec;
+	var sound;
+	
+	
+	
 	var amountTF = Ti.UI.createTextField({
 		keyboardType:Ti.UI.KEYBOARD_DECIMAL_PAD,
 		width:'90%',
@@ -316,7 +328,7 @@ function ExpensesEdAd(_title,_container) {
 			}else{
 				Ti.Media.openPhotoGallery({
 					success:function(e){
-						file = e.media.nativePath;
+						// file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'/photos/' + getTime.getHours() + ':' + getTime.getMinutes() + ':' + getTime.getMilliseconds() + '.jpg');
 					}
 				});
 			}
@@ -331,9 +343,36 @@ function ExpensesEdAd(_title,_container) {
 	});
 	
 	recVoice.addEventListener('click', function(){
-		var sound_record = require('ui/common/record');
-		var Sound_Record = new sound_record('Record',expensesWin,_container);
-		_container.open(Sound_Record);
+		
+		if (recording.recording)
+		{
+			rec = recording.stop();
+			recVoice.title = "Start Recording";
+			// b2.show();
+			// pause.hide();
+			// clearInterval(timer);
+			Ti.Media.stopMicrophoneMonitor();
+		}
+		else
+		{
+			if (!Ti.Media.canRecord) {
+				Ti.UI.createAlertDialog({
+					title:'Error!',
+					message:'No audio recording hardware is currently connected.'
+				}).show();
+				return;
+			}
+			recVoice.title = "Stop Recording";
+			Ti.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAY_AND_RECORD;
+			recording.start();
+			// pause.show();
+			Ti.Media.startMicrophoneMonitor();
+			// duration = 0;
+		}
+		
+		// var sound_record = require('ui/common/record');
+		// var Sound_Record = new sound_record('Record',expensesWin,_container);
+		// _container.open(Sound_Record);
 	});
 	
 	var locLBL = Ti.UI.createLabel({
@@ -391,10 +430,14 @@ function ExpensesEdAd(_title,_container) {
 	});
 	
 	saveNav.addEventListener('click', function(e){
-		splitTags = tagsTF.value;
-		arrayTags = [];
-		arrayTags = splitTags.split(",");
-		db.addExpense(amountTF.value,expensesWin.dateValue,expensesWin.selectedCatg.id,descriptionTA.value,setLatitude,setLongitude,'',file,expensesWin.Record,arrayTags/*expensesWin.AllTags*/);
+		var getTime = new Date();
+		var memo = (Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,'/records/' + getTime.getHours() + ':' + getTime.getMinutes() + ':' + getTime.getMilliseconds() + '.wav'));
+		memo.write(rec);
+		
+		textTags = tagsTF.value;
+		splitTags = [];
+		splitTags = textTags.split(",");
+		db.addExpense(amountTF.value,String.formatDate(expensesWin.dateValue) + ' ' + String.formatTime(expensesWin.dateValue),expensesWin.selectedCatg.id,descriptionTA.value,setLatitude,setLongitude,'',file.nativePath,memo.nativePath/*expensesWin.Record*/,splitTags/*expensesWin.AllTags*/);
 		expensesWin.close();
 	});
 	
@@ -413,7 +456,16 @@ function ExpensesEdAd(_title,_container) {
 	expensesWin.add(dateValue);
 	expensesWin.add(bottomView);
 	
-	expensesWin.setRightNavButton(saveNav);
+	if(Ti.Platform.osname == 'android'){
+		// addPhoto.height == '20%';
+		// recVoice.height == '20%';
+		// locSW.top == '35%';
+		// locLBL.top == '35%';
+		// saveNav.top == '45%';
+		expensesWin.add(saveNav);
+	}else{
+		expensesWin.setRightNavButton(saveNav);
+	}
 	
 	expensesWin.addEventListener('click', function(e){
 		amountTF.blur();

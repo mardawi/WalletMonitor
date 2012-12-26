@@ -47,7 +47,7 @@ function ReportWindow(_title) {
 	reportWin.add(byTagBtn);
 		
 	var byTimeBtn = Ti.UI.createButton({
-		title: 'By Time Spam',
+		title: 'By Time Span',
 		top: '35%',
 		right: '5%',
 		width: '40%',

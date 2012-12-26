@@ -65,7 +65,7 @@ function TransactionReport(_title, _container) {
 		var obj = isDeposit ? db.getSource(data[i].sourceId) : db.getCategory(data[i].categoryId);
 
 		rightPart.add(Ti.UI.createLabel({
-			text : obj.title,
+			text : obj == null ?'':obj.title,
 			right : '5%',
 			color : 'black'
 		}));

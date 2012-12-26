@@ -4,43 +4,34 @@ function record(_title, _containerWin,containerTab) {
 		backgroundColor:'#ccc'
 	});
 	var currentSessionMode = Titanium.Media.audioSessionMode;
-	
-	// Titanium.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAY_AND_RECORD;
 	var recording = Ti.Media.createAudioRecorder();
 	
 	recording.compression = Ti.Media.AUDIO_FORMAT_ULAW;
 	recording.format = Ti.Media.AUDIO_FILEFORMAT_WAVE;
 	
-	// Ti.Media.addEventListener('recordinginput', function(e) {
-		// Ti.API.info('Input availability changed: '+e.available);
-		// if (!e.available && recording.recording) {
-			// b1.fireEvent('click', {});
-		// }
-	// });
-	
 	var file;
-	var timer;
+	// var timer;
 	var sound;
 		
 	
-	var durationLBL = Titanium.UI.createLabel({
-		text:'',
-		top:'50',
-		color:'#999',
-		textAlign:'center',
-		width:'auto',
-		height:'auto'
-	});
-	
-	win.add(durationLBL);
-	
-	var duration = 0;
-	
-	function showLevels()
-	{
-		duration++;
-		durationLBL.text = duration;
-	}
+	// var durationLBL = Titanium.UI.createLabel({
+		// text:'',
+		// top:'50',
+		// color:'#999',
+		// textAlign:'center',
+		// width:'auto',
+		// height:'auto'
+	// });
+// 	
+	// win.add(durationLBL);
+// 	
+	// var duration = 0;
+// 	
+	// function showLevels()
+	// {
+		// duration++;
+		// durationLBL.text = duration;
+	// }
 	
 	var b1 = Titanium.UI.createButton({
 		title:'Start Recording',
@@ -54,9 +45,9 @@ function record(_title, _containerWin,containerTab) {
 		{
 			file = recording.stop();
 			b1.title = "Start Recording";
-			b2.show();
-			pause.hide();
-			clearInterval(timer);
+			// b2.show();
+			// pause.hide();
+			// clearInterval(timer);
 			Ti.Media.stopMicrophoneMonitor();
 		}
 		else
@@ -71,67 +62,67 @@ function record(_title, _containerWin,containerTab) {
 			b1.title = "Stop Recording";
 			Ti.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAY_AND_RECORD;
 			recording.start();
-			pause.show();
+			// pause.show();
 			Ti.Media.startMicrophoneMonitor();
-			duration = 0;
+			// duration = 0;
 		}
 	});
 	win.add(b1);
 	
-	var pause = Titanium.UI.createButton({
-		title:'Pause recording',
-		width:'60%',
-		height:'15%',
-		top:'30%'
-	});
-	win.add(pause);
-	pause.hide();
-	
-	pause.addEventListener('click', function() {
-		if (recording.paused) {
-			pause.title = 'Pause recording';
-			recording.resume();
-			timer = setInterval(showLevels,1000);
-		}
-		else {
-			pause.title = 'Unpause recording';
-			recording.pause();
-			clearInterval(timer);
-		}
-	});
-	
-	var b2 = Titanium.UI.createButton({
-		title:'Playback Recording',
-		width:'60%',
-		height:'15%',
-		top:'30%'
-	});
-	
-	win.add(b2);
-	b2.hide();
-	b2.addEventListener('click', function(e)
-	{
-		if (sound && sound.playing)
-		{
-			sound.stop();
-			sound.release();
-			sound = null;
-			b2.title = 'Playback Recording';
-		}
-		else
-		{
-			Ti.API.info("recording file size: "+file.size);
-			sound = Titanium.Media.createSound({url:file});
-			
-			sound.addEventListener('complete', function()
-			{
-				b2.title = 'Playback Recording';
-			});
-			Titanium.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAYBACK;
-			sound.play();
-			b2.title = 'Stop Playback';
-		}
-	});
+	// var pause = Titanium.UI.createButton({
+		// title:'Pause recording',
+		// width:'60%',
+		// height:'15%',
+		// top:'30%'
+	// });
+	// win.add(pause);
+	// pause.hide();
+// 	
+	// pause.addEventListener('click', function() {
+		// if (recording.paused) {
+			// pause.title = 'Pause recording';
+			// recording.resume();
+			// // timer = setInterval(showLevels,1000);
+		// }
+		// else {
+			// pause.title = 'Unpause recording';
+			// recording.pause();
+			// // clearInterval(timer);
+		// }
+	// });
+// 	
+	// var b2 = Titanium.UI.createButton({
+		// title:'Playback Recording',
+		// width:'60%',
+		// height:'15%',
+		// top:'30%'
+	// });
+// 	
+	// win.add(b2);
+	// b2.hide();
+	// b2.addEventListener('click', function(e)
+	// {
+		// if (sound && sound.playing)
+		// {
+			// sound.stop();
+			// sound.release();
+			// sound = null;
+			// b2.title = 'Playback Recording';
+		// }
+		// else
+		// {
+			// Ti.API.info("recording file size: "+file.size);
+			// sound = Titanium.Media.createSound({url:file});
+// 			
+			// sound.addEventListener('complete', function()
+			// {
+				// b2.title = 'Playback Recording';
+			// });
+			// Titanium.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAYBACK;
+			// sound.play();
+			// b2.title = 'Stop Playback';
+		// }
+	// });
 
 	
 	var saveBTN = Titanium.UI.createButton({

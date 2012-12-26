@@ -8,6 +8,7 @@ var categoryWin = function(_title, _containerWin,containerTab){
 	var data = db.getCategories();
 	var catgTable = Ti.UI.createTableView({
 		data:data,
+		editable:true,
 		backgroundColor:'#ccc'
 	});
 	
@@ -35,6 +36,10 @@ var categoryWin = function(_title, _containerWin,containerTab){
 			Ti.App.fireEvent('selectCategory');
 			win.close();
 		}
+	});
+	
+	catgTable.addEventListener('delete', function(e){
+		db.deleteCategory(e.source.id);
 	});
 	
 	Ti.App.addEventListener('databaseUpdated', function(e){
