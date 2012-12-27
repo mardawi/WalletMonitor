@@ -1,4 +1,4 @@
-function CashFlow(_title, _container) {
+function CashFlow(_title) {
 
 var win = Ti.UI.createWindow({
 	title:_title,
@@ -6,10 +6,10 @@ var win = Ti.UI.createWindow({
 });
 
 var chartView = Ti.UI.createWebView({
-	width: 320,
-   	height: 367,
+	width: Ti.Platform.displayCaps.getPlatformWidth,
+   	height: Ti.Platform.displayCaps.getPlatformHeight,
    	top: 0,
-   	url: '/ui/charts/chart.htm'
+   	url: 'chart.html'
 });
 
 win.add(chartView);

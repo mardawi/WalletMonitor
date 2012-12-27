@@ -9,6 +9,7 @@ var categoryWin = function(_title, _containerWin,containerTab){
 	var catgTable = Ti.UI.createTableView({
 		data:data,
 		editable:true,
+		
 		backgroundColor:'#ccc'
 	});
 	

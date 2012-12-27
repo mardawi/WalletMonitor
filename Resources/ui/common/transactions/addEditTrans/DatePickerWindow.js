@@ -15,7 +15,6 @@ function DatePickerWindow(_title, _container) {
 
 	var picker = Ti.UI.createPicker({
 		type: Ti.UI.PICKER_TYPE_DATE_AND_TIME,
-		// type : Ti.UI.PICKER_TYPE_DATE,
 		minDate : minDate,
 		maxDate : value,
 		value : value
@@ -25,7 +24,7 @@ function DatePickerWindow(_title, _container) {
 	win.add(picker);
 
 	picker.addEventListener('change', function(e) {
-		_container.dateValue = e.value;
+		_container.dateValue = String.formatDate(e.value) + ' ' + String.formatTime(e.value);
 		Ti.App.fireEvent('DateChanged');
 	});
 

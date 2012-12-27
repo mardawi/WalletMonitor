@@ -64,7 +64,7 @@ function setInitailBalance(_title, _container) {
 	
 	savebtn.addEventListener("click",function(){
 		if(balnacetxt.value!=''){
-			Ti.App.Properties.setDouble("setBalnace",Number(balnacetxt.value));
+			Ti.App.Properties.setDouble('setBalnace',Number(balnacetxt.value));
 		}
 		if(expensestxt.value!=''){
 			Ti.App.Properties.setDouble("setExpenses",Number(expensestxt.value));
@@ -75,6 +75,7 @@ function setInitailBalance(_title, _container) {
 		
 		Ti.App.fireEvent('setInitail', {balnace:balnacetxt.value,expenses:expensestxt.value,deposits:depositstxt.value});
 	});
+	
 	
 	var checkValue = function(){
 		if(Ti.App.Properties.hasProperty('setBalnace')){

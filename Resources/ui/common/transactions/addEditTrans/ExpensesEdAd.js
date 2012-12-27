@@ -38,9 +38,8 @@ function ExpensesEdAd(_title,_container) {
 	// fullDateTime.getHours();
 	// fullDateTime.getMinutes();
 	
-	var dateValue = Ti.UI.createTextField({
-		hintText:String.formatDate(new Date()),
-		enabled: false,
+	var dateValue = Ti.UI.createButton({
+		title:String.formatDate(new Date()) + ' ' + String.formatTime(new Date()),
 		width:'90%',
 		top:'2%',
 		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
@@ -65,7 +64,7 @@ function ExpensesEdAd(_title,_container) {
 	// });
 	
 	Ti.App.addEventListener('DateChanged', function(e){
-		dateValue.hintText = expensesWin.dateValue
+		dateValue.title = expensesWin.dateValue
 		// dateValue.hintText = String.formatDate(expensesWin.dateValue);
 	});
 	
@@ -457,11 +456,11 @@ function ExpensesEdAd(_title,_container) {
 	expensesWin.add(bottomView);
 	
 	if(Ti.Platform.osname == 'android'){
-		// addPhoto.height == '20%';
-		// recVoice.height == '20%';
-		// locSW.top == '35%';
-		// locLBL.top == '35%';
-		// saveNav.top == '45%';
+		addPhoto.height == '20%';
+		recVoice.height == '20%';
+		locSW.top == '35%';
+		locLBL.top == '35%';
+		saveNav.top == '45%';
 		expensesWin.add(saveNav);
 	}else{
 		expensesWin.setRightNavButton(saveNav);
