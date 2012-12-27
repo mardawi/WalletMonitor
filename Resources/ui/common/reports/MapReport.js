@@ -46,7 +46,7 @@ function MapReport(_title, _container) {
 			dataExp.push(Titanium.Map.createAnnotation({
 				latitude : expenses[i].latitude,
 				longitude : expenses[i].longitude,
-				title : expenses[i].title,
+				title : expenses[i].address,
 				pincolor : Titanium.Map.ANNOTATION_GREEN,
 				animate : true,
 			}));
