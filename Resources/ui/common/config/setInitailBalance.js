@@ -9,7 +9,6 @@ function setInitailBalance(_title, _container) {
 
 	var balnaceLBL = Ti.UI.createLabel({
 		text : "Balnace Value",
-		// left:5,
 		top : '20%',
 		color : "black",
 	});
@@ -26,25 +25,24 @@ function setInitailBalance(_title, _container) {
 	win.add(balnacetxt);
 
 	var savebtn = Ti.UI.createButton({
-		title : "save",
-		top : '5%',
-		width : '45%'
-	});
-	win.add(savebtn)
 
-	savebtn.addEventListener("click", function() {
-		if (balnacetxt.value != '') {
-			Ti.App.Properties.setDouble("setBalnace", Number(balnacetxt.value));
+		title:"save",
+		top:300,
+		width:100
+	});
+	
+	
+	savebtn.addEventListener("click",function(){
+		if(balnacetxt.value!=''){
+			Ti.App.Properties.setDouble('setBalnace',Number(balnacetxt.value));
 		}
-		Ti.App.fireEvent('setInitail', {
-			balnace : balnacetxt.value,
-			expenses : expensestxt.value,
-			deposits : depositstxt.value
-		});
+		
+		Ti.App.fireEvent('setInitail', {balnace:balnacetxt.value,expenses:expensestxt.value,deposits:depositstxt.value});
 	});
-
-	var checkValue = function() {
-		if (Ti.App.Properties.hasProperty('setBalnace')) {
+	
+	
+	var checkValue = function(){
+		if(Ti.App.Properties.hasProperty('setBalnace')){
 			balnacetxt.value = Ti.App.Properties.getDouble("setBalnace");
 		} else {
 			Ti.App.Properties.setDouble("setBalnace", 0.0);
