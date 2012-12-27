@@ -51,7 +51,6 @@ function MainWindow(_title) {
 
 	var summaryLBL = Ti.UI.createLabel({
 		text : 'Summary',
-		color:'black',
 		left : '5%',
 		top : '5%'
 	});
@@ -67,19 +66,12 @@ function MainWindow(_title) {
 		left : '10%',
 		top : '5%'
 	});
-	
-	
-
+	var blc = 0
 	var balnaceValue = Ti.UI.createLabel({
-		text:Ti.App.Properties.getDouble('setBalnace') + ' JD',
+		text:blc + ' JD',
 		color:'black',
-		left:'45%'
+		left:'70%'
 	});
-	
-	Ti.App.addEventListener('setInitail', function(e){
-		balnaceValue.text = Ti.App.Properties.getDouble('setBalnace') + ' JD';
-   	});
-   	
 	row1.add(balnaceLBL);
 	row1.add(balnaceValue);
 	
@@ -99,7 +91,7 @@ function MainWindow(_title) {
 	var expensesValue = Ti.UI.createLabel({
 		text : exp + ' JD',
 		color:'black',
-		left:'45%'
+		left : '70%'
 	});
 	row2.add(expensesLBL);
 	row2.add(expensesValue);
@@ -120,7 +112,7 @@ function MainWindow(_title) {
 	var depositsValue = Ti.UI.createLabel({
 		text : dep + ' JD',
 		color:'black',
-		left:'45%'
+		left : '70%'
 	});
 	
 	row3.add(depositsLBL);

@@ -47,12 +47,14 @@ exports.recentExpenses = function() {
 
 	var lastMonth = new Date();
 	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
+	
 
 	var expensesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM expense');
 	while (result.isValidRow()) {
-		if (Date.parse(result.fieldByName('date')) >= lastMonth)
+		
+		if (new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= lastMonth)
 			expensesList.push({
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
@@ -83,7 +85,7 @@ exports.getExpensesIncluded = function(_startDate, _endDate) {
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM expense');
 	while (result.isValidRow()) {
-		if (Date.parse(result.fieldByName('date')) >= _startDate && Date.parse(result.fieldByName('date')) <= _endDate)
+		if (new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && Date.parse(result.fieldByName('date')) <= _endDate)
 			expensesList.push({
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
@@ -113,7 +115,7 @@ exports.recentDeposits = function() {
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM deposite');
 	while (result.isValidRow()) {
-		if (Date.parse(result.fieldByName('date')) >= lastMonth)
+		if (new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= lastMonth)
 			depositesList.push({
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
