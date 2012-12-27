@@ -18,16 +18,16 @@ db.execute('INSERT OR REPLACE INTO source VALUES (2, "source2");');
 db.execute('INSERT OR REPLACE INTO source VALUES (3, "source3");');
 db.execute('INSERT OR REPLACE INTO source VALUES (4, "source4");');
 
-db.execute('INSERT OR REPLACE INTO deposite VALUES (1, 104, "12-2-2013", 2);');
-db.execute('INSERT OR REPLACE INTO deposite VALUES (2, 124, "12-4-2013", 3);');
-db.execute('INSERT OR REPLACE INTO deposite VALUES (3, 14, "12-7-2013", 4);');
-db.execute('INSERT OR REPLACE INTO deposite VALUES (4, 14, "12-13-2013", 1);');
+db.execute('INSERT OR REPLACE INTO deposite VALUES (1, 104, "12-2-2012", 2);');
+db.execute('INSERT OR REPLACE INTO deposite VALUES (2, 124, "12-4-2012", 3);');
+db.execute('INSERT OR REPLACE INTO deposite VALUES (3, 14, "11-7-2012", 4);');
+db.execute('INSERT OR REPLACE INTO deposite VALUES (4, 14, "10-13-2012", 1);');
 
-db.execute('INSERT OR REPLACE INTO expense VALUES(1, 50, "12-14-2013", 1, "this is a description", 37.33168900, -122.03073100, "address1", "", "");');
-db.execute('INSERT OR REPLACE INTO expense VALUES(2, 60, "12-16-2013", 1, "this is a description", 33.74511, -84.38993, "address2", "", "");');
-db.execute('INSERT OR REPLACE INTO expense VALUES(3, 70, "12-18-2013", 1, "this is a description", 30.74511, -80.38993, "address3", "", "");');
-db.execute('INSERT OR REPLACE INTO expense VALUES(4, 80, "12-10-2013", 1, "this is a description", 35.74511, -85.38993, "address4", "", "");');
-db.execute('INSERT OR REPLACE INTO expense VALUES(5, 90, "12-1-2013", 1, "this is a description", 34.74511, -83.38993, "address5", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(1, 50, "12-14-2012", 1, "this is a description", 37.33168900, -122.03073100, "address1", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(2, 60, "12-16-2012", 1, "this is a description", 33.74511, -84.38993, "address2", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(3, 70, "12-18-2012", 1, "this is a description", 30.74511, -80.38993, "address3", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(4, 80, "11-10-2012", 1, "this is a description", 35.74511, -85.38993, "address4", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(5, 90, "10-1-2012", 1, "this is a description", 34.74511, -83.38993, "address5", "", "");');
 
 db.execute('INSERT OR REPLACE INTO expenceTag VALUES(1, "Tag1");');
 db.execute('INSERT OR REPLACE INTO expenceTag VALUES(1, "Tag2");');
@@ -44,24 +44,59 @@ db.execute('INSERT OR REPLACE INTO expenceTag VALUES(5, "Tag3");');
 db.close();
 
 exports.recentExpenses = function() {
+
+	var lastMonth = new Date();
+	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
+
 	var expensesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM expense');
-	// WHERE date BETWEEN datetime("now", "-1 month") AND datetime("now", "localtime")');
 	while (result.isValidRow()) {
-		expensesList.push({
-			id : result.fieldByName('id'),
-			amount : Number(result.fieldByName('amount')),
-			date : result.fieldByName('date'),
-			categoryId : result.fieldByName('category_id'),
-			description : result.fieldByName('description'),
-			latitude : Number(result.fieldByName('latitude')),
-			longitude : Number(result.fieldByName('longitude')),
-			address : result.fieldByName('address'),
-			photoUrl : result.fieldByName('photo_url'),
-			voiceNoteUrl : result.fieldByName('voice_note_url'),
-			title : 'Expense',
-		});
+		if (Date.parse(result.fieldByName('date')) >= lastMonth)
+			expensesList.push({
+				id : result.fieldByName('id'),
+				amount : Number(result.fieldByName('amount')),
+				date : result.fieldByName('date'),
+				categoryId : result.fieldByName('category_id'),
+				description : result.fieldByName('description'),
+				latitude : Number(result.fieldByName('latitude')),
+				longitude : Number(result.fieldByName('longitude')),
+				address : result.fieldByName('address'),
+				photoUrl : result.fieldByName('photo_url'),
+				voiceNoteUrl : result.fieldByName('voice_note_url'),
+				title : 'Expense',
+			});
+		result.next();
+	}
+	result.close();
+	db.close();
+
+	return expensesList;
+};
+
+exports.getExpensesIncluded = function(_startDate, _endDate) {
+
+	var lastMonth = new Date();
+	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
+
+	var expensesList = [];
+	var db = Ti.Database.open('WalletTransactions');
+	var result = db.execute('SELECT * FROM expense');
+	while (result.isValidRow()) {
+		if (Date.parse(result.fieldByName('date')) >= _startDate && Date.parse(result.fieldByName('date')) <= _endDate)
+			expensesList.push({
+				id : result.fieldByName('id'),
+				amount : Number(result.fieldByName('amount')),
+				date : result.fieldByName('date'),
+				categoryId : result.fieldByName('category_id'),
+				description : result.fieldByName('description'),
+				latitude : Number(result.fieldByName('latitude')),
+				longitude : Number(result.fieldByName('longitude')),
+				address : result.fieldByName('address'),
+				photoUrl : result.fieldByName('photo_url'),
+				voiceNoteUrl : result.fieldByName('voice_note_url'),
+				title : 'Expense',
+			});
 		result.next();
 	}
 	result.close();
@@ -71,17 +106,21 @@ exports.recentExpenses = function() {
 };
 
 exports.recentDeposits = function() {
+	var lastMonth = new Date();
+	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
+	
 	var depositesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM deposite');
 	while (result.isValidRow()) {
-		depositesList.push({
-			id : result.fieldByName('id'),
-			amount : Number(result.fieldByName('amount')),
-			date : result.fieldByName('date'),
-			sourceId : result.fieldByName('source_id'),
-			title : 'Deposit',
-		});
+		if (Date.parse(result.fieldByName('date')) >= lastMonth)
+			depositesList.push({
+				id : result.fieldByName('id'),
+				amount : Number(result.fieldByName('amount')),
+				date : result.fieldByName('date'),
+				sourceId : result.fieldByName('source_id'),
+				title : 'Deposit',
+			});
 		result.next();
 	}
 	result.close();

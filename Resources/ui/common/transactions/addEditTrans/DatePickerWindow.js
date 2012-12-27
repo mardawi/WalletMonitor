@@ -15,7 +15,6 @@ function DatePickerWindow(_title, _container) {
 
 	var picker = Ti.UI.createPicker({
 		type: Ti.UI.PICKER_TYPE_DATE_AND_TIME,
-		// type : Ti.UI.PICKER_TYPE_DATE,
 		minDate : minDate,
 		maxDate : value,
 		value : value
