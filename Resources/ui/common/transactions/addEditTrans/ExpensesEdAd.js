@@ -1,5 +1,6 @@
 function ExpensesEdAd(_title,_container) {
 	var db = require('lib/db');
+	
 	var Catgdata = db.getCategories();
 	
 	var expensesWin = Ti.UI.createWindow({
@@ -39,7 +40,7 @@ function ExpensesEdAd(_title,_container) {
 	// fullDateTime.getMinutes();
 	
 	var dateValue = Ti.UI.createButton({
-		title:String.formatDate(new Date()) + ' ' + String.formatTime(new Date()),
+		title:new Date(),
 		width:'90%',
 		top:'2%',
 		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
@@ -64,8 +65,8 @@ function ExpensesEdAd(_title,_container) {
 	// });
 	
 	Ti.App.addEventListener('DateChanged', function(e){
-		dateValue.title = expensesWin.dateValue
-		// dateValue.hintText = String.formatDate(expensesWin.dateValue);
+		// dateValue.title = expensesWin.dateValue
+		dateValue.title = String.formatDate(expensesWin.dateValue);
 	});
 	
 	// dateValue.add(setDate);

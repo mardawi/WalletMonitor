@@ -24,7 +24,7 @@ function DatePickerWindow(_title, _container) {
 	win.add(picker);
 
 	picker.addEventListener('change', function(e) {
-		_container.dateValue = String.formatDate(e.value) + ' ' + String.formatTime(e.value);
+		_container.dateValue = e.value; /*+ ' ' + String.formatTime(e.value);*/
 		Ti.App.fireEvent('DateChanged');
 	});
 
