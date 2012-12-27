@@ -47,6 +47,7 @@ function MapReport(_title, _container) {
 				latitude : expenses[i].latitude,
 				longitude : expenses[i].longitude,
 				title : expenses[i].address,
+				
 				pincolor : Titanium.Map.ANNOTATION_GREEN,
 				animate : true,
 			}));
