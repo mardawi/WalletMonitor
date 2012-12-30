@@ -71,7 +71,7 @@ function TransactionReport(_title, _container) {
 		}));
 
 		rightPart.add(Ti.UI.createLabel({
-			text : data[i].date,
+			text : data[i].date + ' ' + data[i].time,
 			right : '5%'
 		}))
 

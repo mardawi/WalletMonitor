@@ -119,7 +119,7 @@ function TimeSpanReport(_title, _container) {
 			}));
 
 			rightPart.add(Ti.UI.createLabel({
-				text : dataExp[i].date,
+				text : dataExp[i].date + ' ' + dataExp[i].time,
 				right : '5%'
 			}))
 
