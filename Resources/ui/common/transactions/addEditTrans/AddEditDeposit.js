@@ -49,7 +49,7 @@ function AddEditDeposit(_title, _container) {
 
 	addSource.addEventListener('click', function(event) {
 		var srcWin = require('ui/common/categoryWin');
-		var CategoryWin = new srcWin('Source', depositWin, data);
+		var CategoryWin = new srcWin('Source', depositWin, _container);
 		_container.open(CategoryWin);
 	});
 
@@ -73,7 +73,7 @@ function AddEditDeposit(_title, _container) {
 		if (isAndroid)
 			return;
 		amountTxt.blur();
-		dateValue.blur();
+		// dateValue.blur();
 	});
 
 	if (isAndroid) {

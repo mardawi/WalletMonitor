@@ -6,11 +6,11 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	</head>
 	<body>
-		<script src="raphael.1.5.2.min.js"
+		<script src="app://Resources/ui/charts/raphael.1.5.2.min.js"
 		type="text/javascript" charset="utf-8"></script>
-		<script src="g.raphael.0.4.1.min.js"
+		<script src="app://Resources/ui/charts/g.raphael.0.4.1.min.js"
 		type="text/javascript" charset="utf-8"></script>
-		<script src="g.line.0.4.2.altered.js"
+		<script src="app://Resources/ui/charts/g.line.0.4.2.altered.js"
 		type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 			.chartWrapper {
@@ -25,15 +25,19 @@
 
 		<script type="text/javascript">
 			var r = Raphael("simpleExample");
+			
+			var daysPoint = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+			var expensesPoint = [5, 10, 20, 16, 1, 19, 8, 14, 17, 7, 3, 13, 4, 15, 9, 11, 2, 18, 12, 6];
+			
 			var chart = r.g.linechart(15, 40, // top left anchor
 			300, 300, // bottom right anchor
 			[
-			[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 
-			[0, 20] // red line x-values
+			daysPoint, 
+			[0, 30] // red line x-values
 			], 
 			[
-			[5, 10, 20, 16, 1, 19, 8, 14, 17, 7, 3, 13, 4, 15, 9, 11, 2, 18, 12, 6], 
-			[0, 20] // red line y-values
+			expensesPoint, 
+			[0, 30] // red line y-values
 			], {
 				nostroke : false, // lines between points are drawn
 				axis : "0 0 1 1", // draw axes on the left and bottom

@@ -60,9 +60,9 @@ function ConfigWindow(_title){
 		})
 	});
 	
-	Ti.App.addEventListener('databaseUpdated', function(e){
-		alert("all Data deleted");
-	});
+	// Ti.App.addEventListener('databaseUpdated', function(e){
+		// alert("all Data deleted");
+	// });
 	
 	changeTimebtn.addEventListener("click",function(){
 		var configTime = require('ui/common/config/configTime');
