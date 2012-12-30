@@ -17,7 +17,10 @@ function MapReport(_title, _container) {
 	win.add(btnLastWeek);
 
 	btnLastWeek.addEventListener('click', function(e) {
-		//TODO: fill Data with last week expenses
+		var lastWeek = new Date();
+		lastWeek.setDate(0);
+		var expenses = db.getExpensesIncluded(lastWeek, new Date());
+		fill(expenses);
 	});
 
 	var btnLast30Days = Ti.UI.createButton({
@@ -28,7 +31,10 @@ function MapReport(_title, _container) {
 	win.add(btnLast30Days);
 
 	btnLast30Days.addEventListener('click', function(e) {
-		//TODO: fill Data with last 30 days Expenses
+		var lastMonth = new Date();
+		lastMonth.setMonth((lastMonth.getMonth - 1 < 0) ? 0 : lastMonth.getMonth - 1);
+		var expenses = db.getExpensesIncluded(lastMonth, new Date());
+		fill(expenses);
 	});
 
 	var btnLastYear = Ti.UI.createButton({
@@ -39,15 +45,37 @@ function MapReport(_title, _container) {
 	win.add(btnLastYear);
 
 	btnLastYear.addEventListener('click', function(e) {
-		//TODO: fill data with last year expenses
 
-		var expenses = db.recentExpenses();
+		var lastYear = new Date();
+		lastYear.setYear(lastYear.getYear() - 1);
+		var expenses = db.getExpensesIncluded(lastYear, new Date());
+		// for (var i = 0; i < expenses.length; i++) {
+		// dataExp.push(Titanium.Map.createAnnotation({
+		// latitude : expenses[i].latitude,
+		// longitude : expenses[i].longitude,
+		// title : expenses[i].address,
+		//
+		// pincolor : Titanium.Map.ANNOTATION_GREEN,
+		// animate : true,
+		// }));
+		// }
+		// mapview.annotations = dataExp;
+		// win.remove(mapview);
+		// win.add(mapview);
+		fill(expenses);
+	});
+
+	var fill = function(expenses) {
+		dataExp = [];
+		mapview.annotations = [];
+		win.remove(mapview);
+		win.add(mapview);
 		for (var i = 0; i < expenses.length; i++) {
 			dataExp.push(Titanium.Map.createAnnotation({
 				latitude : expenses[i].latitude,
 				longitude : expenses[i].longitude,
 				title : expenses[i].address,
-				
+
 				pincolor : Titanium.Map.ANNOTATION_GREEN,
 				animate : true,
 			}));
@@ -55,15 +83,14 @@ function MapReport(_title, _container) {
 		mapview.annotations = dataExp;
 		win.remove(mapview);
 		win.add(mapview);
-	});
-
+	}
 	var mapview = Titanium.Map.createView({
 		mapType : Titanium.Map.STANDARD_TYPE,
 		animate : true,
 		regionFit : true,
 		userLocation : true,
 	});
-	
+
 	win.add(mapview);
 
 	return win;
