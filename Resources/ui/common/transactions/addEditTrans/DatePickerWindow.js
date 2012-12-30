@@ -42,6 +42,7 @@ function DatePickerWindow(_title, _container) {
 	}
 
 	picker.addEventListener('change', function(e) {
+
 		_container.dateValue = e.value;
 		Ti.App.fireEvent('DateChanged');
 	});
