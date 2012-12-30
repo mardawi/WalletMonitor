@@ -13,13 +13,15 @@ function CategoryReport(_title, _container) {
 		top : 50,
 		height : isAndroid ? '15%' : '50%',
 		top : '2%',
-		width:'90%'
+		width : '90%'
 	});
 
 	var db = require('lib/db');
 	var categories = db.getCategories();
 
-	var data = [];
+	var data = [Ti.UI.createPickerRow({
+		title : 'Select Category'
+	})];
 
 	for (var i = 0; i < categories.length; i++) {
 		data.push(Ti.UI.createPickerRow({
@@ -29,6 +31,8 @@ function CategoryReport(_title, _container) {
 	}
 
 	picker.addEventListener('change', function(e) {
+		if (e.index == 0)
+			return;
 
 		dataExp = db.getTransByCategory(e.row.category.title);
 		var tableCustomRows = [];

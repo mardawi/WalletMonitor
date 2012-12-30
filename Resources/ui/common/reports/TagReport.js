@@ -13,13 +13,15 @@ function TagReport(_title, _container) {
 		top : 50,
 		height : isAndroid ? '15%' : '50%',
 		top : '2%',
-		width:'90%'
+		width : '90%'
 	});
 
 	var db = require('lib/db');
 	var Tags = db.getTags();
 
-	var data = [];
+	var data = [Ti.UI.createPickerRow({
+		title : 'Select A Tag'
+	})];
 
 	for (var i = 0; i < Tags.length; i++) {
 		data.push(Ti.UI.createPickerRow({
@@ -30,6 +32,9 @@ function TagReport(_title, _container) {
 
 	picker.addEventListener('change', function(e) {
 
+		if (e.index == 0)
+			return;
+			
 		dataExp = db.getTransByTag(e.row.tagName);
 		var tableCustomRows = [];
 
