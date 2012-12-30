@@ -4,7 +4,7 @@ var db = Ti.Database.open('WalletTransactions');
 db.execute('CREATE TABLE IF NOT EXISTS category(id INTEGER PRIMARY KEY, name TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS source(id INTEGER PRIMARY KEY, name TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS deposite(id INTEGER PRIMARY KEY, amount REAL, date TEXT, source_id INTEGER DEFAULT 1 REFERENCES source(id) ON UPDATE CASCADE ON DELETE SET DEFAULT);');
-db.execute('CREATE TABLE IF NOT EXISTS expense(id INTEGER PRIMARY KEY, amount REAL, date TEXT, category_id INTEGER DEFAULT 1 REFERENCES category(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, description TEXT, latitude REAL, longitude REAL, address TEXT, photo_url TEXT, voice_note_url TEXT);');
+db.execute('CREATE TABLE IF NOT EXISTS expense(id INTEGER PRIMARY KEY, amount REAL, date TEXT, time TEXT, category_id INTEGER DEFAULT 1 REFERENCES category(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, description TEXT, latitude REAL, longitude REAL, address TEXT, photo_url TEXT, voice_note_url TEXT);');
 db.execute('CREATE TABLE IF NOT EXISTS expenceTag(expense_id INTEGER DEFAULT 1 REFERENCES expense(id) ON UPDATE CASCADE ON DELETE SET DEFAULT, tag_name TEXT);');
 
 //these added for testing
@@ -59,6 +59,7 @@ exports.recentExpenses = function() {
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
 				date : result.fieldByName('date'),
+				time: result.fieldByName('time'),
 				categoryId : result.fieldByName('category_id'),
 				description : result.fieldByName('description'),
 				latitude : Number(result.fieldByName('latitude')),
@@ -90,6 +91,7 @@ exports.getExpensesIncluded = function(_startDate, _endDate) {
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
 				date : result.fieldByName('date'),
+				time: result.fieldByName('time'),
 				categoryId : result.fieldByName('category_id'),
 				description : result.fieldByName('description'),
 				latitude : Number(result.fieldByName('latitude')),
@@ -131,9 +133,9 @@ exports.recentDeposits = function() {
 	return depositesList;
 };
 
-exports.addExpense = function(amount, date, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl, tags) {
+exports.addExpense = function(amount, date, time,  categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl, tags) {
 	var db = Ti.Database.open('WalletTransactions');
-	var id = db.execute("INSERT INTO expense(amount, date, category_id, description, latitude, longitude, address, photo_url, voice_note_url) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", amount, date, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl);
+	var id = db.execute("INSERT INTO expense(amount, date, time, category_id, description, latitude, longitude, address, photo_url, voice_note_url) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", amount, date, time, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl);
 
 	for (var i = 0; i < tags.length; i++)
 		db.execute('INSERT OR REPLACE INTO expenceTag VALUES (?, ?);', id, tags[i]);
@@ -199,9 +201,9 @@ exports.deleteSource = function(sId) {
 	Ti.App.fireEvent('databaseUpdated');
 };
 
-exports.editExpense = function(id, amount, date, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl, tags) {
+exports.editExpense = function(id, amount, date, time, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl, tags) {
 	var db = Ti.Database.open('WalletTransactions');
-	db.execute('UPDATE expense SET amount = ?, date = ?, category = ?, description = ?, latitude = ?, longitude = ?, address = ?, photo_url = ?, voice_note_url = ? WHERE id = ?', amount, date, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl, id);
+	db.execute('UPDATE expense SET amount = ?, date = ?, time = ?, category = ?, description = ?, latitude = ?, longitude = ?, address = ?, photo_url = ?, voice_note_url = ? WHERE id = ?', amount, date, categoryId, description, latitude, longitude, address, photoUrl, voiceNoteUrl, id);
 	db.close();
 
 	for (var i = 0; i < tags.length; i++)
@@ -323,6 +325,7 @@ exports.getTransByTag = function(_tag) {
 			id : result.fieldByName('id'),
 			amount : Number(result.fieldByName('amount')),
 			date : result.fieldByName('date'),
+			time: result.fieldByName('time'),
 			categoryId : result.fieldByName('category_id'),
 			description : result.fieldByName('description'),
 			latitude : Number(result.fieldByName('latitude')),
@@ -349,6 +352,7 @@ exports.getTransByCategory = function(_category) {
 			id : result.fieldByName('id'),
 			amount : Number(result.fieldByName('amount')),
 			date : result.fieldByName('date'),
+			time : result.fieldByName('date'),
 			categoryId : result.fieldByName('category_id'),
 			description : result.fieldByName('description'),
 			latitude : Number(result.fieldByName('latitude')),
