@@ -4,7 +4,7 @@ function configWin(_title, _container) {
 		backgroundColor : "#ffffff",
 		layout : 'vertical'
 	});
-
+	
 	var picker = Ti.UI.createPicker({
 		top : '10%'
 	});
@@ -26,8 +26,30 @@ function configWin(_title, _container) {
 	picker.selectionIndicator = true;
 
 	picker.add(data);
-
-	win.add(picker);
+	
+	var setperiod = Ti.UI.createButton({
+		title:'Period',
+		top:'5%',
+		width:'80%',
+		height:'15%'
+	});
+	
+	setperiod.addEventListener('click', function(e){
+		var pickerWin = require('ui/common/config/pickerWin');
+		var periodWindow = new pickerWin('select period', win.containingTab);
+		win.containingTab.open(periodWindow);
+	});
+	
+	Ti.App.addEventListener('DateChanged', function(e) {
+		setperiod.title = win.containingTab.setperiod;
+	});
+	
+	
+	if(Ti.Platform.osname == 'android'){
+		win.add(picker);
+	}else{
+		win.add(setperiod);
+	}
 
 	var balnaceLBL = Ti.UI.createLabel({
 		text : "Balnace Value",
@@ -39,6 +61,7 @@ function configWin(_title, _container) {
 
 	var balnacetxt = Ti.UI.createTextField({
 		keyboardType : Ti.UI.KEYBOARD_DECIMAL_PAD,
+		borderStyle:  Ti.Platform.osname == 'iphone' || Ti.Platform.osname == 'ipad' ? Ti.UI.INPUT_BORDERSTYLE_ROUNDED : null,
 		value : "0.0",
 		top : '2%',
 		color : "#000000",

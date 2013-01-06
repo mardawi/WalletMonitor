@@ -3,7 +3,7 @@ function editCategory(_title, _container,_data,_id) {
 	
 	var win = Ti.UI.createWindow({
 		title:_title,
-		backgroundColor:'white'
+		backgroundColor:'#ccc'
 	});
 	
 	var self = Ti.UI.createView({
