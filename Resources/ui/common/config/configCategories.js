@@ -13,6 +13,7 @@ function configCategories(_title, _container) {
 	
 	var populate = function(){
    			data = db.getCategories();
+   			catgTable.data = data;
    			catgTable.appendRow({title:'Add New Row'});
    	};
 

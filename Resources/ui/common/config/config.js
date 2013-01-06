@@ -173,6 +173,7 @@ function configWin(_title, _container) {
 		if(this.value!=""){
 			if(decimalOnly.test(this.value)){
 				Ti.App.Properties.setDouble("SetBalance",this.value);
+				Ti.App.fireEvent("BalanceChange");
 			}else{
 				if((this.value)[(this.value).length-1] !="."){
 					alert("Please enter numbers only");

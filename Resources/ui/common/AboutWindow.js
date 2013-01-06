@@ -4,7 +4,7 @@ function AboutWindow(_title) {
 	});
 	
 	var webView = Ti.UI.createWebView({
-		url:'about.html'
+		url:'../../about.html'
 	});
 	
 	About.add(webView);
