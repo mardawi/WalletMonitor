@@ -48,7 +48,6 @@ exports.recentExpenses = function() {
 	var lastMonth = new Date();
 	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
 	
-
 	var expensesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM expense');
