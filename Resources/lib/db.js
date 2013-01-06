@@ -42,6 +42,7 @@ db.execute('INSERT OR REPLACE INTO expenceTag VALUES(5, "Tag1");');
 db.execute('INSERT OR REPLACE INTO expenceTag VALUES(5, "Tag3");');
 
 db.close();
+
 exports.recentExpenses = function() {
 
 	var lastMonth = new Date();
