@@ -66,12 +66,25 @@ function MainWindow(_title) {
 		left : '10%',
 		top : '5%'
 	});
-	var blc = 0
+	
+	
+	var blc;
+	
+	
+	
+	
+	blc = Ti.App.Properties.getDouble("SetBalance");
 	var balnaceValue = Ti.UI.createLabel({
 		text:blc + ' JD',
 		color:'black',
 		left:'70%'
 	});
+	
+	Ti.App.addEventListener('BalanceChange', function(e){
+		blc = Ti.App.Properties.getDouble("SetBalance");
+		balnaceValue.text = blc + ' JD';
+	});
+	
 	row1.add(balnaceLBL);
 	row1.add(balnaceValue);
 	

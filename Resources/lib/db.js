@@ -93,7 +93,7 @@ exports.getExpensesIncluded = function(_startDate, _endDate) {
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM expense');
 	while (result.isValidRow()) {
-		(new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) <= _endDate)
+		if(new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) <= _endDate)
 			expensesList.push({
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
@@ -130,7 +130,7 @@ exports.getDepositsIncluded = function(_startDate, _endDate) {
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM deposite');
 	while (result.isValidRow()) {
-		(new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) <= _endDate)
+		if(new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) <= _endDate)
 			depositesList.push({
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
