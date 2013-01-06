@@ -81,7 +81,6 @@ exports.recentExpenses = function() {
 };
 
 exports.getExpensesIncluded = function(_startDate, _endDate) {
-
 	var lastMonth = new Date();
 	
 	if(lastMonth.getMonth() - 1 < 0){
