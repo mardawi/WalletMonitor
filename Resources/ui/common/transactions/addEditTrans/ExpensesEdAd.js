@@ -124,16 +124,18 @@ function ExpensesEdAd(_title, _container) {
 	var file = null;
 
 	addPhoto.addEventListener('click', function(e) {
+		var getTime = new Date();
 		if (Ti.Media.isCameraSupported) {
 			Ti.Media.showCamera({
 				success : function(e) {
-					var getTime = new Date();
 					file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, '/photos/' + getTime.getHours() + ':' + getTime.getMinutes() + ':' + getTime.getMilliseconds() + '.jpg');
 				}
 			})
 		} else {
 			Ti.Media.openPhotoGallery({
 				success : function(e) {
+					file = e.media;
+					// file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, '/photos/' + getTime.getHours() + ':' + getTime.getMinutes() + ':' + getTime.getMilliseconds() + '.jpg');
 				}
 			});
 		}

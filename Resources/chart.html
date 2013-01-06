@@ -25,19 +25,20 @@
 
 		<script type="text/javascript">
 			var r = Raphael("simpleExample");
-			
-			var daysPoint = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-			var expensesPoint = [5, 10, 20, 16, 1, 19, 8, 14, 17, 7, 3, 13, 4, 15, 9, 11, 2, 18, 12, 6];
-			
+			var days = [];
+			for(var i=1; i<=data.length; i++){
+				days.push(i);
+			}
+			// var daysPoint = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,26, 27, 28, 29, 30];
 			var chart = r.g.linechart(15, 40, // top left anchor
 			300, 300, // bottom right anchor
 			[
-			daysPoint, 
+			days,
 			[0, 30] // red line x-values
 			], 
 			[
-			expensesPoint, 
-			[0, 30] // red line y-values
+			data, 
+			[0, 100] // red line y-values
 			], {
 				nostroke : false, // lines between points are drawn
 				axis : "0 0 1 1", // draw axes on the left and bottom

@@ -8,9 +8,35 @@ function TransactionReport(_title, _container) {
 	});
 
 	var db = require('lib/db');
-	var data = db.recentDeposits();
-
-	var expenses = db.recentExpenses();
+	var StartDate = new Date();
+	var EndDate = new Date();
+	var getCurrentDate = function(){
+		var currentDate = Ti.App.Properties.getString("DatePicker");
+		if(currentDate=="Year"){
+			StartDate.setYear(StartDate.getFullYear()-1);
+		}
+		if(currentDate=="Month"){
+			var lastMonth = new Date();
+			if(lastMonth.getMonth() - 1 < 0){
+				lastMonth.setYear(lastMonth.getFullYear() - 1);
+			}
+			lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 11 : lastMonth.getMonth() - 1);
+			StartDate = lastMonth;
+		}
+		if(currentDate=="Week"){
+			StartDate.setDate(StartDate.getDate()-7);
+		}
+	}
+	getCurrentDate();
+	
+	Ti.API.info("StartDate is: " + StartDate);
+	Ti.API.info("EndDate is: " + EndDate);
+	
+	var data = db.getDepositsIncluded(StartDate,EndDate);
+	var expenses = db.getExpensesIncluded(StartDate,EndDate);
+	
+	/*var data = db.recentDeposits();
+	var expenses = db.recentExpenses();*/
 
 	for (var i = 0; i < expenses.length; i++) {
 		data.push(expenses[i]);
@@ -29,6 +55,8 @@ function TransactionReport(_title, _container) {
 	var tableCustomRows = [];
 
 	for (var i = 0; i < data.length; i++) {
+		
+		
 		var row = Ti.UI.createTableViewRow({
 			height : '70',
 			data : data[i]
@@ -78,8 +106,9 @@ function TransactionReport(_title, _container) {
 		row.add(rightPart);
 		tableCustomRows.push(row);
 	}
-
+	
 	transTable.data = tableCustomRows;
+	
 
 	transTable.addEventListener('click', function(e) {
 

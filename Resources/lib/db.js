@@ -23,11 +23,12 @@ db.execute('INSERT OR REPLACE INTO deposite VALUES (2, 124, "12-4-2012", 3);');
 db.execute('INSERT OR REPLACE INTO deposite VALUES (3, 14, "11-7-2012", 4);');
 db.execute('INSERT OR REPLACE INTO deposite VALUES (4, 14, "10-13-2012", 1);');
 
-db.execute('INSERT OR REPLACE INTO expense VALUES(1, 50, "12-14-2012", "12:00 AM", 1, "this is a description", 37.33168900, -122.03073100, "address1", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(1, 50, "12-28-2012", "12:00 AM", 1, "this is a description", 37.33168900, -122.03073100, "address1", "", "");');
 db.execute('INSERT OR REPLACE INTO expense VALUES(2, 60, "12-16-2012", "12:00 AM", 1, "this is a description", 33.74511, -84.38993, "address2", "", "");');
 db.execute('INSERT OR REPLACE INTO expense VALUES(3, 70, "12-18-2012", "12:00 AM", 1, "this is a description", 30.74511, -80.38993, "address3", "", "");');
 db.execute('INSERT OR REPLACE INTO expense VALUES(4, 80, "11-10-2012", "12:00 AM", 1, "this is a description", 35.74511, -85.38993, "address4", "", "");');
 db.execute('INSERT OR REPLACE INTO expense VALUES(5, 90, "10-1-2012", "12:00 AM", 1, "this is a description", 34.74511, -83.38993, "address5", "", "");');
+db.execute('INSERT OR REPLACE INTO expense VALUES(6, 190, "1-2-2013", "12:00 AM", 1, "this is a description", 34.74511, -83.38993, "address5", "", "");');
 
 db.execute('INSERT OR REPLACE INTO expenceTag VALUES(1, "Tag1");');
 db.execute('INSERT OR REPLACE INTO expenceTag VALUES(1, "Tag2");');
@@ -42,16 +43,18 @@ db.execute('INSERT OR REPLACE INTO expenceTag VALUES(5, "Tag1");');
 db.execute('INSERT OR REPLACE INTO expenceTag VALUES(5, "Tag3");');
 
 db.close();
-
 exports.recentExpenses = function() {
 
 	var lastMonth = new Date();
-	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
+	if(lastMonth.getMonth() - 1 < 0){
+		lastMonth.setYear(lastMonth.getFullYear() - 1);
+	}
+	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 11 : lastMonth.getMonth() - 1);
 	
-
 	var expensesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM expense');
+	alert(lastMonth);
 	while (result.isValidRow()) {
 		
 		if (new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= lastMonth)
@@ -80,13 +83,18 @@ exports.recentExpenses = function() {
 exports.getExpensesIncluded = function(_startDate, _endDate) {
 
 	var lastMonth = new Date();
-	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
+	
+	if(lastMonth.getMonth() - 1 < 0){
+		lastMonth.setYear(lastMonth.getFullYear() - 1);
+	}
+	
+	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 11 : lastMonth.getMonth() - 1);
 
 	var expensesList = [];
 	var db = Ti.Database.open('WalletTransactions');
 	var result = db.execute('SELECT * FROM expense');
 	while (result.isValidRow()) {
-		if (new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && Date.parse(result.fieldByName('date')) <= _endDate)
+		(new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) <= _endDate)
 			expensesList.push({
 				id : result.fieldByName('id'),
 				amount : Number(result.fieldByName('amount')),
@@ -109,9 +117,44 @@ exports.getExpensesIncluded = function(_startDate, _endDate) {
 	return expensesList;
 };
 
+exports.getDepositsIncluded = function(_startDate, _endDate) {
+
+	var lastMonth = new Date();
+	
+	if(lastMonth.getMonth() - 1 < 0){
+		lastMonth.setYear(lastMonth.getFullYear() - 1);
+	}
+	
+	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 11 : lastMonth.getMonth() - 1);
+
+	var depositesList = [];
+	var db = Ti.Database.open('WalletTransactions');
+	var result = db.execute('SELECT * FROM deposite');
+	while (result.isValidRow()) {
+		(new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) >= _startDate && new Date(Date.parse(result.fieldByName('date').replace(/-/g,'/'))) <= _endDate)
+			depositesList.push({
+				id : result.fieldByName('id'),
+				amount : Number(result.fieldByName('amount')),
+				date : result.fieldByName('date'),
+				sourceId : result.fieldByName('source_id'),
+				title : 'Deposit',
+			});
+		result.next();
+	}
+	result.close();
+	db.close();
+
+	return depositesList;
+};
+
 exports.recentDeposits = function() {
 	var lastMonth = new Date();
-	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 0 : lastMonth.getMonth() - 1);
+	
+	if(lastMonth.getMonth() - 1 < 0){
+		lastMonth.setYear(lastMonth.getFullYear() - 1);
+	}
+	
+	lastMonth.setMonth(lastMonth.getMonth() - 1 < 0 ? 11 : lastMonth.getMonth() - 1);
 	
 	var depositesList = [];
 	var db = Ti.Database.open('WalletTransactions');
@@ -299,6 +342,7 @@ exports.getSource = function(_id) {
 	return sourcesList[0];
 };
 
+
 exports.getSources = function() {
 	var sourcesList = [];
 	var db = Ti.Database.open('WalletTransactions');
@@ -319,7 +363,7 @@ exports.getSources = function() {
 exports.getTransByTag = function(_tag) {
 	var transList = [];
 	var db = Ti.Database.open('WalletTransactions');
-	var result = db.execute('SELECT DISTINCT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url FROM expense, expenceTag WHERE  expenceTag.tag_name = ? AND expense.id = expenceTag.expense_id', _tag);
+	var result = db.execute('SELECT DISTINCT expense.id, expense.amount, expense.date, expense.time, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url FROM expense, expenceTag WHERE  expenceTag.tag_name = ? AND expense.id = expenceTag.expense_id', _tag);
 	while (result.isValidRow()) {
 		transList.push({
 			id : result.fieldByName('id'),
@@ -346,13 +390,13 @@ exports.getTransByTag = function(_tag) {
 exports.getTransByCategory = function(_category) {
 	var transList = [];
 	var db = Ti.Database.open('WalletTransactions');
-	var result = db.execute('SELECT expense.id, expense.amount, expense.date, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url FROM expense, category WHERE  category.name = ? AND category.id = expense.category_id', _category);
+	var result = db.execute('SELECT expense.id, expense.amount, expense.date, expense.time, expense.category_id, expense.description, expense.latitude, expense.longitude, expense.address, expense.photo_url, expense.voice_note_url FROM expense, category WHERE  category.name = ? AND category.id = expense.category_id', _category);
 	while (result.isValidRow()) {
 		transList.push({
 			id : result.fieldByName('id'),
 			amount : Number(result.fieldByName('amount')),
 			date : result.fieldByName('date'),
-			time : result.fieldByName('date'),
+			time : result.fieldByName('time'),
 			categoryId : result.fieldByName('category_id'),
 			description : result.fieldByName('description'),
 			latitude : Number(result.fieldByName('latitude')),
